@@ -1,7 +1,6 @@
 <template>
     <div>
         <Nav/>
-        <span>Yo.</span>
     </div>
 </template>
 <script>

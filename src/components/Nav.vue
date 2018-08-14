@@ -1,33 +1,28 @@
 <template>
-    <Menu mode="horizontal" :theme="theme1" active-name="1">
-        <MenuItem name="1">
-            <Icon type="ios-paper" />
-            内容管理
-        </MenuItem>
-        <MenuItem name="2">
-            <Icon type="ios-people" />
-            用户管理
-        </MenuItem>
-        <Submenu name="3">
-            <template slot="title">
-                <Icon type="ios-stats" />
-                统计分析
-            </template>
-            <MenuGroup title="使用">
-                <MenuItem name="3-1">新增和启动</MenuItem>
-                <MenuItem name="3-2">活跃分析</MenuItem>
-                <MenuItem name="3-3">时段分析</MenuItem>
-            </MenuGroup>
-            <MenuGroup title="留存">
-                <MenuItem name="3-4">用户留存</MenuItem>
-                <MenuItem name="3-5">流失用户</MenuItem>
-            </MenuGroup>
-        </Submenu>
-        <MenuItem name="4">
-            <Icon type="ios-construct" />
-            综合设置
-        </MenuItem>
-    </Menu>
+    <div class="nav">
+        <Col class="search" span="3"></Col>
+        <Col class="logo" span="16">
+            <Col span="8">
+                <router-link to="/">
+                    <img src="../assets/logo.png">
+                </router-link>
+            </Col>
+            <Col span="8">
+                <Input class="search" placeholder="Enter something..."/>
+            </Col>
+        </Col>
+        <Col class="operate" span="5">
+            <Col span="5">
+                <img class="recommand" src="../assets/recommand.png">
+            </Col>
+            <Col span="5">
+                <img class="love" src="../assets/love.png">
+            </Col>
+            <Col span="5">
+                <img class="user" src="../assets/user.png">
+            </Col>
+        </Col>
+    </div>
 </template>
 <script>
     export default {
@@ -38,3 +33,26 @@
         }
     }
 </script>
+<style scoped>
+    .nav {
+        height: 80px;
+        padding-top: 15px;
+        border-bottom:1px solid rgba(0,0,0,.0975);
+    }
+    img {
+        width: 70%;
+    }
+    .search {
+        padding-top: 10px;
+    }
+    .operate {
+        padding-top: 8px;
+    }
+    .operate .love {
+        padding-top: 1px;
+    }
+    .operate .user {
+        padding-top: 4px;
+    }
+</style>
+
