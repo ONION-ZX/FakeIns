@@ -6,7 +6,10 @@ import Vue from 'vue';
 import App from './App.vue';
 import VueRouter from 'vue-router';
 import iView from 'iview';
+
 import Home from './page/Home';
+import Me from './page/Me';
+
 
 Vue.config.productionTip = false;
 Vue.use(VueRouter);
@@ -15,6 +18,7 @@ Vue.use(iView);
 const router = new VueRouter({
   routes: [
     {path: '/', component: Home },
+    {path: '/me', component: Me },
   ]
 })
 

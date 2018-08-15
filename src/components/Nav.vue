@@ -19,7 +19,9 @@
                 <img class="love" src="http://pcim2j6mo.bkt.clouddn.com//18-8-15/96675976.jpg">
             </Col>
             <Col span="5">
-                <img class="user" src="http://pcim2j6mo.bkt.clouddn.com//18-8-15/19249728.jpg">
+                <router-link to="/me">
+                    <img class="user" src="http://pcim2j6mo.bkt.clouddn.com//18-8-15/19249728.jpg">
+                </router-link>
             </Col>
         </Col>
     </div>
