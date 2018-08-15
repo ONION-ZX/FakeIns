@@ -4,7 +4,7 @@
         <Col class="logo" span="16">
             <Col span="8">
                 <router-link to="/">
-                    <img src="../assets/logo.png">
+                    <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-15/65748165.jpg">
                 </router-link>
             </Col>
             <Col span="8">
@@ -13,18 +13,19 @@
         </Col>
         <Col class="operate" span="5">
             <Col span="5">
-                <img class="recommand" src="../assets/recommand.png">
+                <img class="recommand" src="http://pcim2j6mo.bkt.clouddn.com//18-8-15/17506210.jpg">
             </Col>
             <Col span="5">
-                <img class="love" src="../assets/love.png">
+                <img class="love" src="http://pcim2j6mo.bkt.clouddn.com//18-8-15/96675976.jpg">
             </Col>
             <Col span="5">
-                <img class="user" src="../assets/user.png">
+                <img class="user" src="http://pcim2j6mo.bkt.clouddn.com//18-8-15/19249728.jpg">
             </Col>
         </Col>
     </div>
 </template>
 <script>
+    /* eslint-disable */ 
     export default {
         data () {
             return {
@@ -35,6 +36,7 @@
 </script>
 <style scoped>
     .nav {
+        background: #fff;
         height: 80px;
         padding-top: 15px;
         border-bottom:1px solid rgba(0,0,0,.0975);
