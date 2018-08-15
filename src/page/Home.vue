@@ -7,9 +7,9 @@
                     <Card class="home">
                         <p slot="title">The standard card</p>
                         <img class="home" src="http://pcim2j6mo.bkt.clouddn.com//18-8-15/46606719.jpg">
-                        <Row>
-                            <Col class="home" span="22">
-                                <Icon class="home" type="ios-heart-outline" size="28"/>
+                        <Row :gutter="12">
+                            <Col class="home icon" span="22">
+                                <Icon style="padding-left:10px" class="home" type="ios-heart-outline" size="28"/>
                                 <Icon class="home" type="ios-chatbubbles-outline" size="28"/>
                             </Col>
                             <Col span="2">
@@ -207,6 +207,7 @@ export default {
         margin-top: 40px;
     }
     .ivu-card.home {
+        margin-top: 30px;
         padding-bottom: 20px;
         /* height:900px; */
         border-radius: 0;
@@ -229,6 +230,10 @@ export default {
     .ivu-row .comment {
         font-weight: bold;
     }   
+    .row .praise,
+    .detail {
+        padding-left: 10px;
+    }
 
     .row .praise {
         display: inline-block;
