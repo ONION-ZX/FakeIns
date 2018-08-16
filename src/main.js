@@ -9,6 +9,8 @@ import iView from 'iview';
 
 import Home from './page/Home';
 import Me from './page/Me';
+import Login from './page/Login';
+
 
 
 Vue.config.productionTip = false;
@@ -19,6 +21,7 @@ const router = new VueRouter({
   routes: [
     {path: '/', component: Home },
     {path: '/me', component: Me },
+    {path: '/login', component: Login },
   ]
 })
 
