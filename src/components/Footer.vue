@@ -33,8 +33,13 @@ export default {
     }
     .global_footer a,
     .global_footer span{
+        cursor: pointer;
         font-weight: bold;
         color: #003569;
+    }
+    .global_footer a:hover,
+    .global_footer span:hover {
+        color:purple;
     }
     .global_footer span {
         padding: 5px;

@@ -184,7 +184,7 @@
                         <a>隐私· </a>
                         <a>条款· </a>
                         <a>目录· </a>
-                        <a>个人主页· </a>
+                        <router-link to="/me">个人主页·</router-link>
                         <a>话题标签· </a>
                         <a>语言</a>
                         <p>© 2018 FAKEINS</p>
@@ -207,7 +207,6 @@ export default {
         margin-top: 40px;
     }
     .ivu-card.home {
-        margin-top: 30px;
         padding-bottom: 20px;
         /* height:900px; */
         border-radius: 0;
