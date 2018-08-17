@@ -19,7 +19,7 @@
                         <Input type="password" style="width:268px" placeholder="密码"/>
                     </Col>
                 </Row>
-                <Row>
+                <Row class="login-btn">
                     <Col span="15" offset="2">
                         <Button type="primary" style="width:268px">登录</Button>                       
                     </Col>
@@ -76,13 +76,19 @@ export default {
         border: 1px solid rgba(0,0,0,.125);
         outline: 0;
     }
+    .login-btn button{
+        font-size: 13px;
+        font-weight: bold;
+    }
     .forget-pass {
         cursor: default;
         margin-top: 9px;
     }
     .forget-pass h4{
+        color: #003569;
         text-align: center;
         padding-left: 52px;
+        font-size: 12px;
     }
 </style>
 
