@@ -1,38 +1,38 @@
 <template>
     <div class="container">
         <Row>
-            <Col class="login" span="9" offset="8">
-                <Row class="login-logo">
+            <Col class="signup" span="9" offset="7">
+                <Row class="signup-logo">
                     <Col span="15"offset="5">
                         <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-16/37395195.jpg">
                     </Col>
                 </Row>
                 <Row class="signup-slogan">
-                    <Col span="20" offset="4">
+                    <Col span="20" offset="2">
                         <h2>注册Fakeins，分享精彩世界</h2>                        
                     </Col>
                 </Row>
-                <Row class="login-input">
+                <Row class="signup-input">
                     <Col span="15" offset="2">
                         <Input classname="in" type="text" style="width:268px" placeholder="手机号/账号或邮箱"/>
                     </Col>
                 </Row>
-                <Row class="login-input"> 
+                <Row class="signup-input"> 
                     <Col span="15" offset="2">
                         <Input type="password" style="width:268px" placeholder="全名"/>
                     </Col>
                 </Row>
-                <Row class="login-input"> 
+                <Row class="signup-input"> 
                     <Col span="15" offset="2">
                         <Input type="password" style="width:268px" placeholder="账号"/>
                     </Col>
                 </Row>
-                <Row class="login-input"> 
+                <Row class="signup-input"> 
                     <Col span="15" offset="2">
                         <Input type="password" style="width:268px" placeholder="密码"/>
                     </Col>
                 </Row>
-                <Row class="login-btn">
+                <Row class="signup-btn">
                     <Col span="15" offset="2">
                         <Button type="primary" style="width:268px">注册</Button>                       
                     </Col>
@@ -45,9 +45,9 @@
             </Col>
         </Row>
         <Row>
-            <Col class="signup" span="9" offset="8">
+            <Col class="signup" span="9" offset="7">
                 <span>有账户了?</span>
-                <router-link to="/login">请登录</router-link>
+                <router-link to="/signup">请登录</router-link>
             </Col>
         </Row>
         <Footer/>
@@ -65,7 +65,7 @@ export default {
         background-color: #fafafa;
     }
     
-    .login, .signup {
+    .signup {
         border: 1px solid rgba(0,0,0,.125);
         padding: 20px 20px 30px 20px;
         margin-top: 20px;
@@ -74,15 +74,15 @@ export default {
     .signup-slogan {
         color: rgba(0,0,0,.5);
     }
-    .login-logo img {
+    .signup-logo img {
         max-width: 100%;
     }
-    .login-input {
+    .signup-input {
         /* height: 45px; */
         position: relative;
         margin-top: 10px;
     }
-    .login-input label {
+    .signup-input label {
         font-size: 10px;
         padding-left: 5px;
         padding-bottom: 5px;
@@ -90,10 +90,10 @@ export default {
         position: absolute;
         top: -2%;
     }
-    .login-input > * {
+    .signup-input > * {
         display: block;
     }
-    .login-input input {
+    .signup-input input {
         height: 36px;
         padding-top: 5px;
         padding-left: 5px;
@@ -101,7 +101,7 @@ export default {
         border: 1px solid rgba(0,0,0,.125);
         outline: 0;
     }
-    .login-btn button{
+    .signup-btn button{
         font-size: 13px;
         font-weight: bold;
     }

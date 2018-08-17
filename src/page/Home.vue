@@ -4,8 +4,8 @@
         <div class="container">
             <Row :gutter="30">
                 <Col class="left" span="15">
-                    <Card class="home">
-                        <p slot="title">The standard card</p>
+                    <Card class="home-card">
+                        <p slot="title" class="publisher">beijing_silvermine</p>
                         <img class="home" src="http://pcim2j6mo.bkt.clouddn.com//18-8-15/46606719.jpg">
                         <Row :gutter="12">
                             <Col class="home icon" span="22">
@@ -56,7 +56,7 @@
                             </Row>
                         </Row>
                     </Card>
-                    <Card class="home">
+                    <Card class="home-card">
                         <p slot="title">The standard card</p>
                         <img class="home" src="http://pcim2j6mo.bkt.clouddn.com//18-8-15/51928164.jpg">
                         <Row>
@@ -108,7 +108,7 @@
                             </Row>
                         </Row>
                     </Card>
-                    <Card class="home">
+                    <Card class="home-card">
                         <p slot="title">The standard card</p>
                         <img class="home" src="http://pcim2j6mo.bkt.clouddn.com//18-8-15/72395664.jpg">
                         <Row>
@@ -163,10 +163,10 @@
                 </Col>
                 <Col class="right" span="9">
                     <Row :gutter="16" class="user">
-                        <Col span="4">
+                        <Col span="7">
                             <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-15/46606719.jpg">
                         </Col>
-                        <Col class="username" span="20">
+                        <Col class="username" span="17">
                             <Row :gutter="16">Onion</Row>
                             <Row :gutter="16" class="bio">: )</Row>
                         </Col>
@@ -203,6 +203,13 @@ export default {
 </script>
 
 <style>
+    .home-card {
+        margin-top: 20px;
+        padding-bottom: 10px;
+    }
+    .home-card:first-child {
+        margin-top: 0;
+    }
     .left, .right {
         margin-top: 40px;
     }
