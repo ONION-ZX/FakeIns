@@ -164,7 +164,9 @@
                 <Col class="right" span="9">
                     <Row :gutter="16" class="user">
                         <Col span="7">
-                            <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-15/46606719.jpg">
+                            <router-link to="/me">
+                                <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-15/46606719.jpg">
+                            </router-link>
                         </Col>
                         <Col class="username" span="17">
                             <Row :gutter="16">Onion</Row>
