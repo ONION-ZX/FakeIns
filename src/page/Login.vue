@@ -31,19 +31,27 @@
                 </Row>
             </Col>
         </Row>
+        <Row>
+            <Col class="signup" span="9" offset="8">
+                <span>没有账户?</span>
+                <a>注册</a>
+            </Col>
+        </Row>
+        <Footer/>
     </div>
 </template>
 
 <script>
+import Footer from '../components/Footer';
 export default {
-    
+    components: { Footer },
 }
 </script>
 <style>
     body {
         background-color: #fafafa;
     }
-    .login {
+    .login, .signup {
         border: 1px solid rgba(0,0,0,.125);
         padding: 20px 20px 30px 20px;
         margin-top: 20px;
@@ -89,6 +97,14 @@ export default {
         text-align: center;
         padding-left: 52px;
         font-size: 12px;
+    }
+    .signup {
+        text-align: center;
+        font-size: 13px;
+        font-weight: bold;
+    }
+    .signup > * {
+        padding-right: 5px;
     }
 </style>
 
