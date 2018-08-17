@@ -10,6 +10,8 @@ import iView from 'iview';
 import Home from './page/Home';
 import Me from './page/Me';
 import Login from './page/Login';
+import Signup from './page/Signup';
+
 
 
 
@@ -22,6 +24,7 @@ const router = new VueRouter({
     {path: '/', component: Home },
     {path: '/me', component: Me },
     {path: '/login', component: Login },
+    {path: '/signup', component: Signup },
   ]
 })
 
