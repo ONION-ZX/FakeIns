@@ -7,13 +7,15 @@
                     <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-15/65748165.jpg">
                 </router-link>
             </Col>
-            <Col span="8">
-                <Input class="search" placeholder="Enter something..."/>
+            <Col span="5" offset="3">
+                <Input search class="search" placeholder="Enter something..."/>
             </Col>
         </Col>
         <Col class="operate" span="5">
             <Col span="5">
-                <img class="recommand" src="http://pcim2j6mo.bkt.clouddn.com//18-8-15/17506210.jpg">
+                <router-link to="/discover">
+                    <img class="recommand" src="http://pcim2j6mo.bkt.clouddn.com//18-8-15/17506210.jpg">
+                </router-link>
             </Col>
             <Col span="5">
                 <img class="love" src="http://pcim2j6mo.bkt.clouddn.com//18-8-15/96675976.jpg">

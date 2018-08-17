@@ -12,6 +12,8 @@ import Me from './page/Me';
 import Login from './page/Login';
 import Signup from './page/Signup';
 import Publisher from './page/Publisher';
+import Discover from './page/Discover';
+
 
 
 
@@ -28,7 +30,7 @@ const router = new VueRouter({
     {path: '/login', component: Login },
     {path: '/signup', component: Signup },
     {path: '/publisher', component: Publisher },
-
+    {path: '/discover', component: Discover },
   ]
 })
 
