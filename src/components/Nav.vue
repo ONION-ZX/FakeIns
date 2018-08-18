@@ -20,7 +20,7 @@
                     <Icon type="ios-chatbubbles-outline" color="#262626" size="23"/>
                 </Col>
                 <Col span="3" class="nav-recommand">
-                    <router-link to="/discover">
+                    <router-link to="/explore">
                         <Icon type="ios-compass-outline" color="#262626" size="23"/>
                         <!-- <img class="recommand" src="http://pcim2j6mo.bkt.clouddn.com//18-8-15/17506210.jpg"> -->
                     </router-link>
