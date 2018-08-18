@@ -120,10 +120,18 @@
         padding-left: 10px;
     }
     .modal-addition button {
+        font-weight: bold;
+        cursor: pointer;
+        color: rgba(0,0,0,.9);
+        outline: 0;
         padding:8px;
         background: #fff;
         border: 1px solid rgba(0,0,0,.2);
         border-radius: 10px;
+    }
+    .modal-addition button:hover {
+        background: rgba(0,0,0,.9);
+        color: #fff;
     }
 
 </style>

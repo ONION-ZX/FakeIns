@@ -8,7 +8,7 @@
                         <span>发现用户</span>
                     </Col>
                     <Col class="all-right" span="2">
-                        <a>查看全部</a>
+                        <router-link to="/explore/people">查看全部</router-link>
                     </Col>
                 </Row>
                 <Row class="discover-content">
@@ -208,8 +208,8 @@
     </div>
 </template>
 <script>
-import Footer from '../components/Footer';
-import Nav from '../components/Nav';
+import Footer from '../../components/Footer';
+import Nav from '../../components/Nav';
 export default {
     components: { Nav, Footer },
 }

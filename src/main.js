@@ -12,9 +12,9 @@ import Me from './page/Me';
 import Login from './page/Login';
 import Signup from './page/Signup';
 import Publisher from './page/Publisher';
-import Discover from './page/Discover';
-
-
+import ExploreBase from './page/explore/Base';
+import Discover from './page/explore/Discover';
+import People from './page/People';
 
 
 
@@ -25,12 +25,19 @@ Vue.use(iView);
 
 const router = new VueRouter({
   routes: [
-    {path: '/', component: Home },
-    {path: '/me', component: Me },
-    {path: '/login', component: Login },
-    {path: '/signup', component: Signup },
-    {path: '/publisher', component: Publisher },
-    {path: '/discover', component: Discover },
+    { path: '/', component: Home },
+    // { path: '/me', component: Me },
+    { path: '/login', component: Login },
+    { path: '/signup', component: Signup },
+    { path: '/publisher', component: Publisher },
+    { path: '/people', component: People },
+    { path: '/explore', 
+      component: ExploreBase,
+      children: [
+          { path: '', component: Discover},
+          { path: 'people', component: People},
+        ],
+     },
   ]
 })
 
