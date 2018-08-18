@@ -13,8 +13,8 @@ import Login from './page/Login';
 import Signup from './page/Signup';
 import Publisher from './page/Publisher';
 import ExploreBase from './page/explore/Base';
-import Discover from './page/explore/Discover';
-import People from './page/People';
+import Explore from './page/explore/Explore';
+import People from './page/explore/People';
 
 
 
@@ -34,7 +34,7 @@ const router = new VueRouter({
     { path: '/explore', 
       component: ExploreBase,
       children: [
-          { path: '', component: Discover},
+          { path: '', component: Explore},
           { path: 'people', component: People},
         ],
      },
