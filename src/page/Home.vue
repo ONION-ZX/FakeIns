@@ -206,20 +206,16 @@ export default {
 
 <style>
     .home-card {
+        color:#17233d;
         margin-top: 20px;
-        padding-bottom: 10px;
+        padding-bottom: 20px;
+        border-radius: 0;
     }
     .home-card:first-child {
         margin-top: 0;
     }
     .left, .right {
         margin-top: 40px;
-    }
-    .ivu-card.home {
-        padding-bottom: 20px;
-        /* height:900px; */
-        border-radius: 0;
-        color:#17233d;
     }
     .ivu-card-body {
         padding: 0;
