@@ -46,39 +46,39 @@ export default {
     data() {
         return {
             current: {},
+            login_failed: false,
         }
     },
     methods: {
         submit() {
             let unique, password;
-            if(!(unique = this.current.$unique) || !(password = this.current.password))
+            if (!(unique = this.current.$unique) || !(password = this.current.password))
                 return;
             api('user/read', {
                 where: {
                     or: [
                         ['nickname', '=', unique],
-                        ['mail', '=', unique],
                         ['phone', '=', unique],
+                        ['mail', '=', unique],
                     ],
-                },
+                }
             })
             .then(r => {
-                console.log(r.data);
                 let row;
-                if (!(row = r.data[ 0 ]) || row.password !== password) {
+                if(!(row = r.data[0]) || row.password !== password) {
                     this.login_failed = true;
                     return;
                 }
-                this.on_login_succeed(row);
+                this.on_login_success(row);
                 this.$router.push('/');
-                alert('Yo.');
+                alert('Yo');
             });
         },
-        on_login_succeed (row) {
+        on_login_success(row) {
             this.login_failed = false;
             delete row.password;
             session.login(row);
-        },
+        }
     }
 }
 </script>

@@ -169,8 +169,9 @@
                             </router-link>
                         </Col>
                         <Col class="username" span="17">
-                            <Row :gutter="16">Onion</Row>
-                            <Row :gutter="16" class="bio">: )</Row>
+                            <Row :gutter="16">{{uinfo.nickname}}</Row>
+                            <Row :gutter="16" class="bio">{{current.bio}}</Row>
+                            <!-- <Row :gutter="16" class="bio">: )</Row> -->
                         </Col>
                     </Row>
                     <Row class="shortcut">
@@ -198,9 +199,28 @@
 </template>
 <script>
  /* eslint-disable */ 
-import Nav from '../components/Nav'
+import api from '../lib/api';
+import session from '../lib/session';
+import Nav from '../components/Nav';
 export default {
     components: { Nav},
+    mounted() {
+        this.read();
+    },
+    data() {
+        return {
+            current: {},
+            uinfo: session.uinfo(),
+        }        
+    },
+    methods: {
+        read() {
+            api('user/read', {where: {id: 4}})
+                .then(r => {
+                    this.current = r.data[0];
+                })
+        }
+    }
 }
 </script>
 
