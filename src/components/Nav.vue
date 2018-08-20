@@ -33,7 +33,7 @@
             </Row>
             <Row class="modal-content">
                 <Row>
-                    <Input wrap="soft" type="textarea" placeholder="What's happening?" />
+                    <Input rows="6" wrap="soft" type="textarea" placeholder="What's happening?" />
                 </Row>
                 <Row class="modal-addition">
                     <Col span="2">
