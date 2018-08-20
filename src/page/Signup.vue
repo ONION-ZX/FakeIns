@@ -1,49 +1,34 @@
 <template>
     <div class="container">
-        <Row>
-            <Col class="signup" span="9" offset="7">
-                <Row class="signup-logo">
-                    <Col span="15"offset="5">
-                        <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-16/37395195.jpg">
-                    </Col>
-                </Row>
-                <Row class="signup-slogan">
-                    <Col span="20" offset="2">
-                        <h2>注册Fakeins，分享精彩世界</h2>                        
-                    </Col>
-                </Row>
-                <Row class="signup-input">
-                    <Col span="15" offset="2">
-                        <Input classname="in" type="text" style="width:268px" placeholder="手机号/账号或邮箱"/>
-                    </Col>
-                </Row>
-                <Row class="signup-input"> 
-                    <Col span="15" offset="2">
-                        <Input type="password" style="width:268px" placeholder="全名"/>
-                    </Col>
-                </Row>
-                <Row class="signup-input"> 
-                    <Col span="15" offset="2">
-                        <Input type="password" style="width:268px" placeholder="账号"/>
-                    </Col>
-                </Row>
-                <Row class="signup-input"> 
-                    <Col span="15" offset="2">
-                        <Input type="password" style="width:268px" placeholder="密码"/>
-                    </Col>
-                </Row>
-                <Row class="signup-btn">
-                    <Col span="15" offset="2">
-                        <Button type="primary" style="width:268px">注册</Button>                       
-                    </Col>
-                </Row>
-                <Row class="signup-rule">
-                    <Col span="20" offset="2">
-                        <h3>注册即表示你同意接受我们的 条款 、 数据使用政策 和 Cookie 政策 。</h3>
-                    </Col>
-                </Row>
-            </Col>
-        </Row>
+        <Form class="signup">
+            <Row class="signup-logo">
+                <Col span="15"offset="5">
+                    <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-16/37395195.jpg">
+                </Col>
+            </Row>
+            <Row class="signup-slogan">
+                <Col span="20" offset="2">
+                    <h2>注册Fakeins，分享精彩世界</h2>                        
+                </Col>
+            </Row>
+            <FormItem class="signup-input">
+                <Input v-model="form.phone" classname="in" type="text" placeholder="手机号/账号或邮箱"/>
+            </FormItem>
+            <FormItem class="signup-input"> 
+                <Input v-model="form.nickname" type="text" placeholder="昵称"/>
+            </FormItem>
+            <FormItem class="signup-input"> 
+                <Input v-model="form.password" type="password" placeholder="密码"/>
+            </FormItem>
+            <Row class="signup-btn">
+                <Button @click.native="submit" type="primary" style="width:268px">注册</Button>                       
+            </Row>
+            <Row class="signup-rule">
+                <Col span="20" offset="2">
+                    <h3>注册即表示你同意接受我们的 条款 、 数据使用政策 和 Cookie 政策 。</h3>
+                </Col>
+            </Row>
+        </Form>
         <Row>
             <Col class="signup" span="9" offset="7">
                 <span>有账户了?</span>
@@ -55,14 +40,29 @@
 </template>
 
 <script>
+import api from '../lib/api';
 import Footer from '../components/Footer';
 export default {
     components: { Footer },
+    data() {
+        return {
+            form: {},
+        }
+    },
+    methods: {
+        submit() {
+            api('user/create',this.form)
+                .then(r =>  console.log(r));
+        }
+    }
 }
 </script>
 <style>
     body {
         background-color: #fafafa;
+    }
+    .ivu-form-item {
+        margin-bottom: 10px;
     }
     
     .signup {

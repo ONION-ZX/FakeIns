@@ -2,12 +2,35 @@
 <script src="./api.js"></script>
 
 <script>
+// api('MODEL/BIND', {
+//     left      : 'user', // 左模型
+//     right     : 'user', // 右模型
+//     left_key  : 'follower_id', // 左模型键
+//     right_key : 'target_id', // 右模型键
+// });
 
-api('MODEL/BIND', {
-    left      : 'user', // 左模型
-    right     : 'user', // 右模型
-    left_key  : 'follower_id', // 左模型键
-    right_key : 'target_id', // 右模型键
+
+// api('user/bind', {
+//     model: 'user',
+//     glue: {
+//         1: 2,
+//         2: 1,
+//     },
+// })
+
+api('user/read', {
+with : [
+    [
+    {
+        model    : 'user',
+        relation : 'belongs_to_many',
+        // only: ['id']
+    },
+    ],
+],
 });
+
+
+// api('MODEL/CREATE', model)
 
 </script>
