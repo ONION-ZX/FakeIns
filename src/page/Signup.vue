@@ -2,7 +2,7 @@
     <div class="container">
         <Row>
             <Col span="9" offset="8">
-                <Form class="signup">
+                <Form @submit.native.prevent="submit" class="signup">
                     <Row class="signup-logo">
                         <Col span="15"offset="5">
                             <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-16/37395195.jpg">
@@ -14,10 +14,10 @@
                         </Col>
                     </Row>
                     <FormItem class="signup-input">
-                        <Input type="text" @on-click="send_code()" v-model="form.phone" icon="ios-send" placeholder="手机号/邮箱" style="width: auto" />
+                        <Input type="text" @on-click="send_code()" v-model="form.$unique" icon="ios-send" placeholder="手机号/邮箱" style="width: auto" />
                     </FormItem>
                     <FormItem class="signup-input">
-                        <Input v-model="code" classname="in" type="text" placeholder="验证码"/>
+                        <Input v-model="form.user_code" classname="in" type="text" placeholder="验证码"/>
                     </FormItem>
                     <FormItem class="signup-input"> 
                         <Input v-model="form.nickname" type="text" placeholder="昵称"/>
@@ -26,7 +26,7 @@
                         <Input v-model="form.password" type="password" placeholder="密码"/>
                     </FormItem>
                     <Row class="signup-btn">
-                        <Button @click.native="submit" type="primary" style="width:268px">注册</Button>                       
+                        <Button html-type="submit" type="primary" style="width:268px">注册</Button>                       
                     </Row>
                     <Row class="signup-rule">
                         <Col span="20" offset="2">
@@ -55,20 +55,50 @@ export default {
         return {
             code: '',
             form: {},
+            signup_by: 'phone',
+            invalid_code: false,
         }
     },
     methods: {
         submit() {
+            this.invalid_code = this.form.user_code !== this.code;
+            if(this.invalid_code)
+                return;
+
+            if (this.signup_by == 'mail')
+                delete this.form.phone;
+            else
+                 delete this.form.mail;
+
             api('user/create',this.form)
                 .then(r => {
+                    this.invalid_code = false;
                     alert('注册成功!');
                     this.$router.push('/');
                 });
         },
         send_code() {
-            api('captcha/sms', {phone: this.form.phone})
-                .then(r =>  {
-                    this.code = window.atob(r.data);
+            let action
+              , by_mail
+              , unique = this.form.$unique
+              , phone_reg = 11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/
+              , mail_reg = /^[A-Za-zd]+([-_.][A-Za-zd]+)*@([A-Za-zd]+[-.])+[A-Za-zd]{2,5}$/;
+            if(phone_reg.test(unique))
+                this.signup_by = 'sms';
+            else if(mail_reg.test(unique))
+                this.signup_by = 'mail';
+            action = this.signup_by;
+
+            if(by_mail = this.signup_by == 'mail')
+                action = 'mail';
+            // if ((by_mail && !this.form.mail) || (!by_mail && !this.form.phone))
+            //     return;
+
+            console.log(this.form);
+
+            api(`captcha/${action}`, { phone : this.form.$unique, mail: this.form.$unique })
+                .then(r => {
+                this.code = atob(r.data.result);
                 });
         }
     }

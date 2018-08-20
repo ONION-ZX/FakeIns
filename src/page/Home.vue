@@ -161,11 +161,11 @@
                         </Row>
                     </Card>
                 </Col>
-                <Col class="right" span="9">
+                <Col class="home-right" span="9">
                     <Row :gutter="16" class="user">
                         <Col span="7">
                             <router-link to="/me">
-                                <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-15/46606719.jpg">
+                                <img :src="current.avatar_url">
                             </router-link>
                         </Col>
                         <Col class="username" span="17">
@@ -234,7 +234,7 @@ export default {
     .home-card:first-child {
         margin-top: 0;
     }
-    .left, .right {
+    .left, .home-right {
         margin-top: 40px;
     }
     .ivu-card-body {
@@ -284,10 +284,10 @@ export default {
         border: 0;
         outline: 0;        
     }
-    .right .user {
+    .home-right .user {
         padding-bottom: 15px;
     }
-    .right .user img {
+    .home-right .user img {
         max-width: 80%;
         border-radius: 50%;
     }
