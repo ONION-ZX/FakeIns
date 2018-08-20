@@ -9,14 +9,14 @@
                         </Col>
                     </Row>
                     <FormItem class="login-input">
-                        <Input type="text" placeholder="用户名/手机号或邮箱"/>
+                        <Input v-model="current.$unique" type="text" placeholder="用户名/手机号或邮箱"/>
                     </FormItem>
                     <FormItem class="login-input"> 
-                        <Input type="password" placeholder="密码"/>
+                        <Input v-model="current.password" type="password" placeholder="密码"/>
                     </FormItem>
                     <FormItem class="login-btn">
                         <Col span="6" offset="8">
-                            <Button type="primary">登录</Button>                       
+                            <Button @click.native="submit()" html-type="submit" type="primary">登录</Button>                       
                         </Col>
                     </FormItem>
                     <FormItem class-name="forget-pass">
@@ -38,9 +38,48 @@
 </template>
 
 <script>
+import api from '../lib/api';
+import session from '../lib/session';
 import Footer from '../components/Footer';
 export default {
     components: { Footer },
+    data() {
+        return {
+            current: {},
+        }
+    },
+    methods: {
+        submit() {
+            let unique, password;
+            if(!(unique = this.current.$unique) || !(password = this.current.password))
+                return;
+            api('user/read', {
+                where: {
+                    or: [
+                        ['nickname', '=', unique],
+                        ['mail', '=', unique],
+                        ['phone', '=', unique],
+                    ],
+                },
+            })
+            .then(r => {
+                console.log(r.data);
+                let row;
+                if (!(row = r.data[ 0 ]) || row.password !== password) {
+                    this.login_failed = true;
+                    return;
+                }
+                this.on_login_succeed(row);
+                this.$router.push('/');
+                alert('Yo.');
+            });
+        },
+        on_login_succeed (row) {
+            this.login_failed = false;
+            delete row.password;
+            session.login(row);
+        },
+    }
 }
 </script>
 <style>
