@@ -12,7 +12,10 @@
                 </Col>
             </Row>
             <FormItem class="signup-input">
-                <Input v-model="form.phone" classname="in" type="text" placeholder="手机号/账号或邮箱"/>
+                <Input type="text" @on-click="send_code()" v-model="form.phone" icon="ios-send" placeholder="手机号/邮箱" style="width: auto" />
+            </FormItem>
+            <FormItem class="signup-input">
+                <Input v-model="code" classname="in" type="text" placeholder="验证码"/>
             </FormItem>
             <FormItem class="signup-input"> 
                 <Input v-model="form.nickname" type="text" placeholder="昵称"/>
@@ -46,13 +49,24 @@ export default {
     components: { Footer },
     data() {
         return {
+            code: '',
             form: {},
         }
     },
     methods: {
         submit() {
             api('user/create',this.form)
-                .then(r =>  console.log(r));
+                .then(r => {
+                    alert('注册成功!');
+                    this.$router.push('/');
+                });
+        },
+        send_code() {
+            api('captcha/sms', {phone: this.form.phone})
+                .then(r =>  {
+                    this.code = window.atob(r.data);
+                    console.log(this.code);
+                });
         }
     }
 }
