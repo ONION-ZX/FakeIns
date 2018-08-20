@@ -2,7 +2,7 @@
     <div class="container">
         <Row>
             <Col span="9" offset="8">
-                <Form class="login">
+                <Form @submit.native.prevent="submit()" class="login">
                     <Row class="login-logo">
                         <Col span="15" offset="3">
                             <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-16/37395195.jpg">
@@ -16,7 +16,7 @@
                     </FormItem>
                     <FormItem class="login-btn">
                         <Col span="6" offset="8">
-                            <Button @click.native="submit()" html-type="submit" type="primary">登录</Button>                       
+                            <Button html-type="submit" type="primary">登录</Button>                       
                         </Col>
                     </FormItem>
                     <FormItem class-name="forget-pass">
