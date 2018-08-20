@@ -1,34 +1,30 @@
 <template>
     <div class="container">
-        <Row>
-            <Col class="login" span="9" offset="8">
-                <Row class="login-logo">
-                    <Col span="15"offset="5">
-                        <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-16/37395195.jpg">
-                    </Col>
-                </Row>
-                <Row class="login-input">
-                    <Col span="15" offset="2">
-                        <!-- <label>手机号/账号或邮箱</label> -->
-                        <Input type="text" style="width:268px" placeholder="手机号/账号或邮箱"/>
-                    </Col>
-                </Row>
-                <Row class="login-input"> 
-                    <Col span="15" offset="2">
-                        <!-- <label>密码</label> -->
-                        <Input type="password" style="width:268px" placeholder="密码"/>
-                    </Col>
-                </Row>
-                <Row class="login-btn">
-                    <Col span="15" offset="2">
-                        <Button type="primary" style="width:268px">登录</Button>                       
-                    </Col>
-                </Row>
-                <Row class-name="forget-pass">
-                    <Col span="15" offset="2">
-                        <h4>忘记密码?</h4>
-                   </Col>
-                </Row>
+        <Row>
+            <Col span="9" offset="8">
+                <Form class="login">
+                    <Row class="login-logo">
+                        <Col span="15" offset="3">
+                            <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-16/37395195.jpg">
+                        </Col>
+                    </Row>
+                    <FormItem class="login-input">
+                        <Input type="text" placeholder="用户名/手机号或邮箱"/>
+                    </FormItem>
+                    <FormItem class="login-input"> 
+                        <Input type="password" placeholder="密码"/>
+                    </FormItem>
+                    <FormItem class="login-btn">
+                        <Col span="6" offset="8">
+                            <Button type="primary">登录</Button>                       
+                        </Col>
+                    </FormItem>
+                    <FormItem class-name="forget-pass">
+                        <Col span="6" offset="8">
+                            <h4>忘记密码?</h4>
+                        </Col>
+                    </FormItem>
+                </Form>
             </Col>
         </Row>
         <Row>
@@ -51,11 +47,14 @@ export default {
     body {
         background-color: #fafafa;
     }
+    .login > * {
+        padding-left: 20px;
+    }
     .login, .signup {
-        border: 1px solid rgba(0,0,0,.125);
-        padding: 20px 20px 30px 20px;
-        margin-top: 20px;
         background: #fff;
+        border: 1px solid rgba(0,0,0,.125);
+        padding: 20px 0 30px 30px;
+        margin-top: 20px;
     }
     .login-logo img {
         max-width: 100%;

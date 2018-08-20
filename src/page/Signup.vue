@@ -1,39 +1,41 @@
 <template>
     <div class="container">
-        <Form class="signup">
-            <Row class="signup-logo">
-                <Col span="15"offset="5">
-                    <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-16/37395195.jpg">
-                </Col>
-            </Row>
-            <Row class="signup-slogan">
-                <Col span="20" offset="2">
-                    <h2>注册Fakeins，分享精彩世界</h2>                        
-                </Col>
-            </Row>
-            <FormItem class="signup-input">
-                <Input type="text" @on-click="send_code()" v-model="form.phone" icon="ios-send" placeholder="手机号/邮箱" style="width: auto" />
-            </FormItem>
-            <FormItem class="signup-input">
-                <Input v-model="code" classname="in" type="text" placeholder="验证码"/>
-            </FormItem>
-            <FormItem class="signup-input"> 
-                <Input v-model="form.nickname" type="text" placeholder="昵称"/>
-            </FormItem>
-            <FormItem class="signup-input"> 
-                <Input v-model="form.password" type="password" placeholder="密码"/>
-            </FormItem>
-            <Row class="signup-btn">
-                <Button @click.native="submit" type="primary" style="width:268px">注册</Button>                       
-            </Row>
-            <Row class="signup-rule">
-                <Col span="20" offset="2">
-                    <h3>注册即表示你同意接受我们的 条款 、 数据使用政策 和 Cookie 政策 。</h3>
-                </Col>
-            </Row>
-        </Form>
+        <Col span="9" offset="8">
+            <Form class="signup">
+                <Row class="signup-logo">
+                    <Col span="15"offset="5">
+                        <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-16/37395195.jpg">
+                    </Col>
+                </Row>
+                <Row class="signup-slogan">
+                    <Col span="20" offset="2">
+                        <h2>注册Fakeins，分享精彩世界</h2>                        
+                    </Col>
+                </Row>
+                <FormItem class="signup-input">
+                    <Input type="text" @on-click="send_code()" v-model="form.phone" icon="ios-send" placeholder="手机号/邮箱" style="width: auto" />
+                </FormItem>
+                <FormItem class="signup-input">
+                    <Input v-model="code" classname="in" type="text" placeholder="验证码"/>
+                </FormItem>
+                <FormItem class="signup-input"> 
+                    <Input v-model="form.nickname" type="text" placeholder="昵称"/>
+                </FormItem>
+                <FormItem class="signup-input"> 
+                    <Input v-model="form.password" type="password" placeholder="密码"/>
+                </FormItem>
+                <Row class="signup-btn">
+                    <Button @click.native="submit" type="primary" style="width:268px">注册</Button>                       
+                </Row>
+                <Row class="signup-rule">
+                    <Col span="20" offset="2">
+                        <h3>注册即表示你同意接受我们的 条款 、 数据使用政策 和 Cookie 政策 。</h3>
+                    </Col>
+                </Row>
+            </Form>
+        </Col>
         <Row>
-            <Col class="signup" span="9" offset="7">
+            <Col class="signup" span="9" offset="8">
                 <span>有账户了?</span>
                 <router-link to="/signup">请登录</router-link>
             </Col>
@@ -65,7 +67,6 @@ export default {
             api('captcha/sms', {phone: this.form.phone})
                 .then(r =>  {
                     this.code = window.atob(r.data);
-                    console.log(this.code);
                 });
         }
     }
