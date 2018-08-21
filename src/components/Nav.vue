@@ -33,7 +33,7 @@
             </Row>
             <Row class="modal-content">
                 <Row>
-                    <Input :rows="6" wrap="soft" type="textarea" placeholder="What's happening?" />
+                    <Input v-model="postins.content" :rows="6" wrap="soft" type="textarea" placeholder="What's happening?" />
                 </Row>
                 <Form @submit.native.prevent="post()">
                     <Row class="modal-addition">
@@ -47,7 +47,7 @@
                             <Icon type="ios-link-outline" size="24" color="#262626" />
                         </Col>
                         <Col span="2">
-                            <button html-type="submit" type="button">分享</button>
+                            <button @click="post" html-type="submit" type="button">分享</button>
                         </Col>
                     </Row>
                 </Form>
@@ -57,11 +57,24 @@
 </template>
 <script>
     /* eslint-disable */ 
+    import session from '../lib/session';
+    import api from '../lib/api';    
     export default {
         data () {
             return {
+                postins: {},
+                uinfo: session.uinfo(),
                 show_modal: false,
             }
+        },
+        methods: {
+            post() {
+                this.postins.user_id = this.uinfo.id;
+                api('post/create', this.postins)
+                    .then(r => {
+                        this.postins = {};
+                    })
+            },
         }
     }
 </script>

@@ -3,6 +3,12 @@
         <Nav/>
         <div class="container">
             <Row :gutter="30">
+                <div>
+                    <div v-for="it in timeline">
+                        <div class="nickname">{{it.$user.nickname}}</div>
+                        <div class="content">{{it.content}}</div>
+                    </div>
+                </div>
                 <Col class="left" span="15">
                     <Card class="home-card">
                         <p slot="title" class="publisher">beijing_silvermine</p>
@@ -165,16 +171,15 @@
                     <Row :gutter="16" class="user">
                         <Col span="7">
                             <router-link to="/me">
-                                <img :src="current.avatar_url">
+                                <img :src="current.avatar_url ? current.avatar_url : 'http://pcim2j6mo.bkt.clouddn.com//18-8-18/93039025.jpg'">
                             </router-link>
                         </Col>
                         <Col class="username" span="17">
                             <Row :gutter="16">{{uinfo.nickname}}</Row>
-                            <Row :gutter="16" class="bio">{{current.bio}}</Row>
+                            <Row :gutter="16" class="bio">{{current.bio || '; )'}}</Row>
                             <!-- <Row :gutter="16" class="bio">: )</Row> -->
                         </Col>
                     </Row>
-                    {{user_list}}
                     <Row class="shortcut">
                         <h3>所有对象</h3>
                         <div :key="i" v-for="(it, i) in user_list">
@@ -184,7 +189,6 @@
                     </Row>
                     <Row class="shortcut">
                         <h3>已关注对象</h3>
-                        {{followed_list}}
                         <div :key="i" v-for="(it, i) in followed_list">
                             <div>{{it.nickname}}</div>
                             <button class="followed" @click="follow(it)">关注</button>
@@ -224,13 +228,19 @@ export default {
         this.read();
         this.read_all();
         this.read_followed();
+        this.read_timeline();
     },
     data() {
         return {
             current: {},
+            timeline: [],
+            post_list: [],
             user_list: [],
             followed_list: [],
             uinfo: session.uinfo(),
+            with: [
+                {relation: 'has_one', model: 'user'},
+            ],
         }        
     },
     methods: {
@@ -255,8 +265,15 @@ export default {
                 }]
             }).then(r => {
                 this.followed_list = r.data.$user;
-                // console.log(r.data);
             })
+        },
+        read_timeline () {
+            api('post/read', {
+                where : [
+                    [ 'user_id', 'in', this.pluck_arr(this.followed_list, 'id') ],
+                ],
+                with: this.with,
+            }).then(r => this.timeline = r.data);
         },
         follow(user) {
             api('user/bind', {
