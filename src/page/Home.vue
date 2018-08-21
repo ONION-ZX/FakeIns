@@ -174,10 +174,26 @@
                             <!-- <Row :gutter="16" class="bio">: )</Row> -->
                         </Col>
                     </Row>
+                    {{user_list}}
                     <Row class="shortcut">
+                        <h3>所有对象</h3>
+                        <div :key="i" v-for="(it, i) in user_list">
+                            <div>{{it.nickname}}</div>
+                            <button class="followed" @click="follow(it)">关注</button>
+                        </div>
+                    </Row>
+                    <Row class="shortcut">
+                        <h3>已关注对象</h3>
+                        {{followed_list}}
+                        <div :key="i" v-for="(it, i) in followed_list">
+                            <div>{{it.nickname}}</div>
+                            <button class="followed" @click="follow(it)">关注</button>
+                        </div>
+                    </Row>
+                    <!-- <Row class="shortcut">
                         <h3>快拍</h3>
                         <p>你的关注对象动态会显示在这里哦</p>
-                    </Row>
+                    </Row> -->
                     <Row class="footer home">
                         <a>关于我们· </a>
                         <a>支持· </a>
@@ -206,25 +222,68 @@ export default {
     components: { Nav},
     mounted() {
         this.read();
+        this.read_all();
+        this.read_followed();
     },
     data() {
         return {
             current: {},
+            user_list: [],
+            followed_list: [],
             uinfo: session.uinfo(),
         }        
     },
     methods: {
         read() {
-            api('user/read', {where: {id: 4}})
+            api('user/read', {where: {id: this.uinfo.id}})
                 .then(r => {
                     this.current = r.data[0];
+                });
+        },
+        read_all() {
+            api('user/read')
+                .then(r => {
+                    this.user_list = r.data;
                 })
-        }
+        },
+        read_followed() {
+            return api('user/find', {
+                id: this.uinfo.id,
+                with: [{
+                    relation: 'belongs_to_many',
+                    model: 'user',
+                }]
+            }).then(r => {
+                this.followed_list = r.data.$user;
+                // console.log(r.data);
+            })
+        },
+        follow(user) {
+            api('user/bind', {
+                model: 'user',
+                glue: {
+                    [this.uinfo.id]: user.id,
+                }
+            }).then(r => {
+                this.read_followed();
+            })
+        },
+        pluck_arr(arr, key) {
+            const result = [];
+            arr.forEach(obj => {
+                result.push(obj[key]);
+            });
+            return result;
+        },
     }
 }
 </script>
 
 <style>
+    .followed {
+        display: inline-block;
+        padding: 5px;
+    }
     .home-card {
         color:#17233d;
         margin-top: 20px;

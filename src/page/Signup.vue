@@ -13,12 +13,12 @@
                             <h2>注册Fakeins，分享精彩世界</h2>                        
                         </Col>
                     </Row>
-                    <FormItem class="signup-input">
+                    <!-- <FormItem class="signup-input">
                         <Input type="text" @on-click="send_code()" v-model="form.$unique" icon="ios-send" placeholder="手机号/邮箱" style="width: auto" />
                     </FormItem>
                     <FormItem class="signup-input">
                         <Input v-model="form.user_code" classname="in" type="text" placeholder="验证码"/>
-                    </FormItem>
+                    </FormItem> -->
                     <FormItem class="signup-input"> 
                         <Input v-model="form.nickname" type="text" placeholder="昵称"/>
                     </FormItem>
@@ -61,20 +61,20 @@ export default {
     },
     methods: {
         submit() {
-            this.invalid_code = this.form.user_code !== this.code;
-            if(this.invalid_code)
-                return;
+            // this.invalid_code = this.form.user_code !== this.code;
+            // if(this.invalid_code)
+            //     return;
 
-            if (this.signup_by == 'mail')
-                delete this.form.phone;
-            else
-                 delete this.form.mail;
+            // if (this.signup_by == 'mail')
+            //     delete this.form.phone;
+            // else
+            //      delete this.form.mail;
 
             api('user/create',this.form)
                 .then(r => {
                     this.invalid_code = false;
                     alert('注册成功!');
-                    this.$router.push('/');
+                    this.$router.push('/login');
                 });
         },
         send_code() {
