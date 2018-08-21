@@ -3,15 +3,15 @@
         <Nav/>
         <div class="container">
             <Row :gutter="30">
-                <div>
+                <!-- <div>
                     <div v-for="it in timeline">
                         <div class="nickname">{{it.$user.nickname}}</div>
                         <div class="content">{{it.content}}</div>
                     </div>
-                </div>
+                </div> -->
                 <Col class="left" span="15">
-                    <Card class="home-card">
-                        <p slot="title" class="publisher">beijing_silvermine</p>
+                    <Card v-for="it in timeline" class="home-card">
+                        <p slot="title" class="publisher">{{it.$user.nickname}}</p>
                         <img class="home" src="http://pcim2j6mo.bkt.clouddn.com//18-8-15/46606719.jpg">
                         <Row :gutter="12">
                             <Col class="home icon" span="22">
@@ -27,8 +27,8 @@
                         </div>
                         <Row class="detail home">
                             <Row>
-                                <Col span="5" class="publisher home">sadtopographies</Col>
-                                <Col span="19" class="desc home">Unfortunate Cove, Cook’s Harbour, Canada #unfortunate</Col>
+                                <Col span="5" class="publisher home">{{it.$user.nickname}}</Col>
+                                <Col span="19" class="desc home">{{it.content}}</Col>
                             </Row>
                             <Row>
                                 <span class="comment">全部 57 条评论</span>
@@ -62,7 +62,7 @@
                             </Row>
                         </Row>
                     </Card>
-                    <Card class="home-card">
+                    <!-- <Card class="home-card">
                         <p slot="title">The standard card</p>
                         <img class="home" src="http://pcim2j6mo.bkt.clouddn.com//18-8-15/51928164.jpg">
                         <Row>
@@ -165,7 +165,7 @@
                                 <Col span="2">...</Col>
                             </Row>
                         </Row>
-                    </Card>
+                    </Card> -->
                 </Col>
                 <Col class="home-right" span="9">
                     <Row :gutter="16" class="user">
@@ -191,7 +191,7 @@
                         <h3>已关注对象</h3>
                         <div :key="i" v-for="(it, i) in followed_list">
                             <div>{{it.nickname}}</div>
-                            <button class="followed" @click="follow(it)">关注</button>
+                            <button class="followed" @click="unfollow(it)">取消关注</button>
                         </div>
                     </Row>
                     <!-- <Row class="shortcut">
@@ -228,7 +228,7 @@ export default {
         this.read();
         this.read_all();
         this.read_followed();
-        this.read_timeline();
+        // this.read_timeline();
     },
     data() {
         return {
@@ -265,9 +265,13 @@ export default {
                 }]
             }).then(r => {
                 this.followed_list = r.data.$user;
+            }).then(() => {
+                this.read_timeline();
             })
         },
         read_timeline () {
+            //自己发的微博也算到时间线内
+            this.followed_list.push(this.current);
             api('post/read', {
                 where : [
                     [ 'user_id', 'in', this.pluck_arr(this.followed_list, 'id') ],
@@ -277,6 +281,16 @@ export default {
         },
         follow(user) {
             api('user/bind', {
+                model: 'user',
+                glue: {
+                    [this.uinfo.id]: user.id,
+                }
+            }).then(r => {
+                this.read_followed();
+            })
+        },
+        unfollow(user) {
+            api('user/unbind', {
                 model: 'user',
                 glue: {
                     [this.uinfo.id]: user.id,
