@@ -3,16 +3,10 @@
         <Nav/>
         <div class="container">
             <Row :gutter="30">
-                <!-- <div>
-                    <div v-for="it in timeline">
-                        <div class="nickname">{{it.$user.nickname}}</div>
-                        <div class="content">{{it.content}}</div>
-                    </div>
-                </div> -->
                 <Col class="left" span="15">
                     <Card v-for="it in timeline" class="home-card">
                         <p slot="title" class="publisher">{{it.$user.nickname}}</p>
-                        <img class="home" src="http://pcim2j6mo.bkt.clouddn.com//18-8-15/46606719.jpg">
+                        <img class="home" :src="it.img_url">
                         <Row :gutter="12">
                             <Col class="home icon" span="22">
                                 <Icon style="padding-left:10px" class="home" type="ios-heart-outline" size="28"/>
@@ -62,110 +56,6 @@
                             </Row>
                         </Row>
                     </Card>
-                    <!-- <Card class="home-card">
-                        <p slot="title">The standard card</p>
-                        <img class="home" src="http://pcim2j6mo.bkt.clouddn.com//18-8-15/51928164.jpg">
-                        <Row>
-                            <Col class="home" span="22">
-                                <Icon class="home" type="ios-heart-outline" size="28"/>
-                                <Icon class="home" type="ios-chatbubbles-outline" size="28"/>
-                            </Col>
-                            <Col span="2">
-                                <Icon class="home" type="ios-bookmark-outline" size="28"/>
-                            </Col>
-                        </Row>
-                        <div class="row">
-                            <span class="praise">5,050 次赞</span>
-                        </div>
-                        <Row class="detail home">
-                            <Row>
-                                <Col span="5" class="publisher home">sadtopographies</Col>
-                                <Col span="19" class="desc home">Unfortunate Cove, Cook’s Harbour, Canada #unfortunate</Col>
-                            </Row>
-                            <Row>
-                                <span class="comment">全部 57 条评论</span>
-                            </Row>
-                            <Row class="comments">
-                                <Row class="content">
-                                    <Col span="3" class="other home">27cattite</Col>
-                                    <Col span="19" class="desc home">@super_emily77_is_super_awesome 哈哈哈哈</Col>
-                                </Row>
-                                <Row class="content">
-                                    <Col span="3" class="other home">eddie_jan</Col>
-                                    <Col span="19" class="desc home">歡迎</Col>
-                                </Row>
-                                <Row class="content">
-                                    <Col span="3" class="other home">baozhuxi</Col>
-                                    <Col span="19" class="desc home">Yo Taipei is the best</Col>
-                                </Row>
-                                <Row class="content">
-                                    <Col span="3" class="other home">jokejoki_</Col>
-                                    <Col span="19" class="desc home">誒！後面的滴哥和滴妹！</Col>
-                                </Row>
-                                <Row class="line">
-                                    <span class="ago">19小时前</span>
-                                </Row>
-                            </Row>
-                            <Row class="add_comment">
-                                <Col span="22">
-                                    <input type="text" placeholder="添加评论...">
-                                </Col>
-                                <Col span="2">...</Col>
-                            </Row>
-                        </Row>
-                    </Card>
-                    <Card class="home-card">
-                        <p slot="title">The standard card</p>
-                        <img class="home" src="http://pcim2j6mo.bkt.clouddn.com//18-8-15/72395664.jpg">
-                        <Row>
-                            <Col class="home" span="22">
-                                <Icon class="home" type="ios-heart-outline" size="28"/>
-                                <Icon class="home" type="ios-chatbubbles-outline" size="28"/>
-                            </Col>
-                            <Col span="2">
-                                <Icon class="home" type="ios-bookmark-outline" size="28"/>
-                            </Col>
-                        </Row>
-                        <div class="row">
-                            <span class="praise">5,050 次赞</span>
-                        </div>
-                        <Row class="detail home">
-                            <Row>
-                                <Col span="5" class="publisher home">sadtopographies</Col>
-                                <Col span="19" class="desc home">Unfortunate Cove, Cook’s Harbour, Canada #unfortunate</Col>
-                            </Row>
-                            <Row>
-                                <span class="comment">全部 57 条评论</span>
-                            </Row>
-                            <Row class="comments">
-                                <Row class="content">
-                                    <Col span="3" class="other home">27cattite</Col>
-                                    <Col span="19" class="desc home">@super_emily77_is_super_awesome 哈哈哈哈</Col>
-                                </Row>
-                                <Row class="content">
-                                    <Col span="3" class="other home">eddie_jan</Col>
-                                    <Col span="19" class="desc home">歡迎</Col>
-                                </Row>
-                                <Row class="content">
-                                    <Col span="3" class="other home">baozhuxi</Col>
-                                    <Col span="19" class="desc home">Yo Taipei is the best</Col>
-                                </Row>
-                                <Row class="content">
-                                    <Col span="3" class="other home">jokejoki_</Col>
-                                    <Col span="19" class="desc home">誒！後面的滴哥和滴妹！</Col>
-                                </Row>
-                                <Row class="line">
-                                    <span class="ago">19小时前</span>
-                                </Row>
-                            </Row>
-                            <Row class="add_comment">
-                                <Col span="22">
-                                    <input type="text" placeholder="添加评论...">
-                                </Col>
-                                <Col span="2">...</Col>
-                            </Row>
-                        </Row>
-                    </Card> -->
                 </Col>
                 <Col class="home-right" span="9">
                     <Row :gutter="16" class="user">
@@ -232,6 +122,7 @@ export default {
     },
     data() {
         return {
+            show: true,
             current: {},
             timeline: [],
             post_list: [],
@@ -271,11 +162,15 @@ export default {
         },
         read_timeline () {
             //自己发的微博也算到时间线内
-            this.followed_list.push(this.current);
+            if(this.followed_list)
+                this.followed_list.push(this.current);
+            if(!this.followed_list)
+                return;
             api('post/read', {
                 where : [
                     [ 'user_id', 'in', this.pluck_arr(this.followed_list, 'id') ],
                 ],
+                limit: 5,
                 with: this.with,
             }).then(r => this.timeline = r.data);
         },
@@ -301,9 +196,11 @@ export default {
         },
         pluck_arr(arr, key) {
             const result = [];
-            arr.forEach(obj => {
-                result.push(obj[key]);
-            });
+            if(arr) {
+                    arr.forEach(obj => {
+                    result.push(obj[key]);
+                });
+            }
             return result;
         },
     }
@@ -403,6 +300,48 @@ export default {
     }
     .footer.home p {
         padding-top: 10px;
+    }
+    .explore {
+        margin-top: 35px;
+        border-radius: 5px;
+    }
+    .explore-row {
+        padding-left: 27px;
+        padding-bottom: 5px;
+        padding-top: 10px;
+        border-bottom: 1px solid rgba(0,0,0,.1);
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+    .explore-row:last-child {
+        border-bottom: 0;
+    }
+    .explore-title h3 {
+        color: #999;
+        padding: 12px;
+        font-weight: bold;
+    }
+    .explore-content {
+        background: #fff;
+        border: 1px solid rgba(0,0,0,.1);
+    }
+    .explore-avatar img {
+        max-width: 90%;
+        border-radius: 50%;
+    }
+    .e-name h3 {
+        font-size: 16px;
+        color:#262626;
+    }
+    .e-source, .e-bio {
+        font-size: 13px;
+        color: #999;
+        font-weight: 500;
+    }
+    .e-focus {
+        margin-top: 19px;
+        font-size: 14px;
+        font-weight: bold;
     }
 </style>
 

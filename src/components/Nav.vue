@@ -37,19 +37,24 @@
                 </Row>
                 <Form @submit.native.prevent="post()">
                     <Row class="modal-addition">
-                        <Col span="2">
-                            <Icon type="ios-image-outline" size="24" color="#262626"/>
+                        <Col span="2" class="upload-col">
+                            <Icon class="down" type="ios-image-outline" size="24" color="#262626"/>
+                            <input class="up" @change="post_img()" type="file" id="uploader">
+                            <!-- <Upload :headers="headers" action="//mock-cdn.biaoyansu.com/">
+                                <Button icon="ios-cloud-upload-outline">Upload files</Button>
+                            </Upload> -->
                         </Col>
                         <Col span="2">
                             <Icon type="ios-navigate-outline" size="24" color="#262626" />
                         </Col>
-                        <Col span="18">
+                        <Col span="17">
                             <Icon type="ios-link-outline" size="24" color="#262626" />
                         </Col>
                         <Col span="2">
                             <button @click="post" html-type="submit" type="button">分享</button>
                         </Col>
                     </Row>
+                    <Row class="uploaded_list"></Row>
                 </Form>
             </Row>
         </Row>
@@ -62,9 +67,10 @@
     export default {
         data () {
             return {
-                postins: {},
-                uinfo: session.uinfo(),
                 show_modal: false,
+                postins: {},
+                img_url: '',
+                uinfo: session.uinfo(),
             }
         },
         methods: {
@@ -75,10 +81,50 @@
                         this.postins = {};
                     })
             },
-        }
+            post_img() {
+                let file = uploader.files[ 0 ];
+                let fd   = new FormData();
+                fd.append("file", file);
+                fd.append('name', 'my-file.jpg');
+                fd.append('age', 18);
+
+                api('_file/create', fd)
+                .then(r => {
+                    let data  = r.data;
+                    let image = document.createElement('img');
+                    image.classList.add('upload');
+                    let target = document.querySelector('.uploaded_list');
+                    image.src = 'http://' + data._base_url + '/' + data._key;
+                    target.insertAdjacentElement('afterbegin',image);
+                    this.postins.img_url = image.src;
+                });
+            }
+        } 
     }
 </script>
-<style scoped>
+<style>
+    .down {
+        position: relative;
+    }
+    .up {
+        position: absolute;
+        top: 0;
+        left:0;
+    }
+    .upload-col {
+        position: relative;
+    }
+    .upload {
+        width: 80px;
+        height: 80px;
+        margin-right: 10px;
+        border: 1px dashed rgba(0,0,0,.3);
+    }
+    #uploader {
+        color: transparent;
+        position: absolute;
+        opacity: 0;
+    }
     .nav {
         background: #fff;
         height: 80px;
