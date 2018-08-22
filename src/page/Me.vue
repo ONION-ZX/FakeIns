@@ -4,11 +4,12 @@
         <div class="container me">
             <Row class="me-header" :gutter="20">
                 <Col span="5" class="avatar" offset="2">
-                    <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-16/7258985.jpg">
+                    <img :src="me.avatar_url ? me.avatar_url : 'http://pcim2j6mo.bkt.clouddn.com//18-8-16/7258985.jpg'">
                 </Col>
                 <Col class="me-info" span="15" offset="1">
                     <Row class="me-top">
-                        <Col class="me-name" span="4">ONION</Col>
+                        {{me}}
+                        <Col class="me-name" span="4">{{me.nickname}}</Col>
                         <Col class="me-edit" span="3">
                             <Button type="default">编辑个人主页</Button>
                         </Col>
@@ -28,7 +29,8 @@
                         </Col>
                     </Row>
                     <Row class="me-bio">
-                        <p>(づ￣3￣）づ╭❤～</p>
+                        <p>{{me.bio}}</p>
+                        <!-- <p>(づ￣3￣）づ╭❤～</p> -->
                     </Row>
                 </Col>
             </Row>
@@ -171,8 +173,31 @@
 <script>
 import Footer from '../components/Footer';
 import Nav from '../components/Nav';
+import session from '../lib/session';
+import api from '../lib/api';
+
 export default {
     components: { Nav, Footer },
+    mounted() {
+        this.read_me();
+    },
+    data() {
+        return {
+            me: {},
+            uinfo: session.uinfo(),
+            with: [
+                    {relation: 'has_many', model: 'post'},
+                ],
+        }
+    },
+    methods: {
+        read_me() {
+            api('user/read', {where: {id: this.uinfo.id}, with: this.with})
+                .then(r => {
+                    this.me = r.data[0];
+                })
+        }
+    }
 }
 </script>
 

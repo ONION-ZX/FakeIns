@@ -5,11 +5,12 @@
             <Row :gutter="30">
                 <Col class="left" span="15">
                     <Card v-for="it in timeline" class="home-card">
+                        {{it}}
                         <p slot="title" class="publisher">{{it.$user.nickname}}</p>
-                        <img class="home" :src="it.img_url">
+                        <img v-if="it.img_url" class="home" :src="it.img_url">
                         <Row :gutter="12">
                             <Col class="home icon" span="22">
-                                <Icon style="padding-left:10px" class="home" type="ios-heart-outline" size="28"/>
+                                <Icon @click.native="like(it)" style="padding-left:10px" class="home" type="ios-heart-outline" size="28"/>
                                 <Icon class="home" type="ios-chatbubbles-outline" size="28"/>
                             </Col>
                             <Col span="2">
@@ -135,6 +136,20 @@ export default {
         }        
     },
     methods: {
+        like(it) {
+            api('like/create',{post_id: it.id, user_id: it.user_id})
+               .then(r => {
+                   this.read_timeline_like();
+               })
+        },
+        read_timeline_like() {
+            this.timeline.forEach(row => {
+                api('like/read', {id: row.id })
+                   .then(r => {
+                       console.log('第'+row.id+'条点赞数为'+ r.data.length);
+                   })
+            })
+        },
         read() {
             api('user/read', {where: {id: this.uinfo.id}})
                 .then(r => {
@@ -172,7 +187,8 @@ export default {
                 ],
                 limit: 5,
                 with: this.with,
-            }).then(r => this.timeline = r.data);
+            }).then(r => this.timeline = r.data)
+              .then(() => this.read_timeline_like());
         },
         follow(user) {
             api('user/bind', {
