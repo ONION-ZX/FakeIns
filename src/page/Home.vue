@@ -25,14 +25,17 @@
                                 <Col span="19" class="desc home">{{it.content}}</Col>
                             </Row>
                             <Row>
-                                <span class="comment">全部 57 条评论</span>
+                                <span class="comment">全部 {{it.comment_list ? it.comment_list.length : 0}} 条评论</span>
                             </Row>
                             <Row class="comments">
-                                <Row class="content">
-                                    <Col span="3" class="other home">27cattite</Col>
-                                    <Col span="19" class="desc home">@super_emily77_is_super_awesome 哈哈哈哈</Col>
+                                <Row v-for="comment in it.comment_list" class="content">
+                                    <Col span="3" class="other home">{{comment.$user.nickname}}</Col>
+                                    <Col span="16" class="desc home">{{comment.content}}</Col>
+                                    <Col span="3" class="desc home">
+                                        <Button size="small" type="default">回复</Button>
+                                    </Col>
                                 </Row>
-                                <Row class="content">
+                                <!-- <Row class="content">
                                     <Col span="3" class="other home">eddie_jan</Col>
                                     <Col span="19" class="desc home">歡迎</Col>
                                 </Row>
@@ -43,7 +46,7 @@
                                 <Row class="content">
                                     <Col span="3" class="other home">jokejoki_</Col>
                                     <Col span="19" class="desc home">誒！後面的滴哥和滴妹！</Col>
-                                </Row>
+                                </Row> -->
                                 <Row class="line">
                                     <span class="ago">19小时前</span>
                                 </Row>
@@ -71,7 +74,6 @@
                         <Col class="username" span="17">
                             <Row :gutter="16">{{uinfo.nickname}}</Row>
                             <Row :gutter="16" class="bio">{{current.bio || '; )'}}</Row>
-                            <!-- <Row :gutter="16" class="bio">: )</Row> -->
                         </Col>
                     </Row>
                     <Row class="shortcut">
@@ -120,10 +122,9 @@ export default {
     components: { Nav},
     mounted() {
         this.init_form();
-        this.read();
-        this.read_all();
+        // this.read();
+        // this.read_all();
         this.read_followed();
-        // this.read_timeline();
     },
     data() {
         return {
@@ -134,6 +135,7 @@ export default {
             post_list: [],
             user_list: [],
             followed_list: [],
+            // comment_list:[],
             uinfo: session.uinfo(),
             with: [
                 {relation: 'has_one', model: 'user'},
@@ -147,12 +149,24 @@ export default {
                 reply_to: null,
             };
         },
+        read_comment() {
+            this.timeline.forEach(row => {
+                api('comment/read',{where:{post_id: row.id},with:this.with})
+                    .then(r => {
+                        if(r.data) {
+                            row.comment_list = r.data;
+                        }
+                    })          
+            })
+        },
         comment(it) {
             this.form.post_id = it.id;
+            this.form.user_id = this.uinfo.id;
             api('comment/create',this.form)
                 .then(r => {
                     this.init_form();
-                    this.comment_list.unshift(r.data);
+                    // this.comment_list.unshift(r.data);
+                    this.read_comment();
                 })
         },
         like(it) {
@@ -194,6 +208,7 @@ export default {
                 this.followed_list = r.data.$user;
             }).then(() => {
                 this.read_timeline();
+                this.read_comment();
             })
         },
         read_timeline () {
@@ -210,7 +225,11 @@ export default {
                 with: this.with,
             }).then(r => {
                 this.timeline = r.data;
-            }).then(() => this.read_timeline_like());
+            }).then(() => {
+                this.read_timeline_like();
+                this.read_comment();
+                }
+            );
         },
         follow(user) {
             api('user/bind', {
@@ -380,6 +399,9 @@ export default {
         margin-top: 19px;
         font-size: 14px;
         font-weight: bold;
+    }
+    .comments .content {
+        margin-top: 8px;
     }
 </style>
 
