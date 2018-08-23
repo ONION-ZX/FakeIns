@@ -125,6 +125,7 @@ export default {
         return {
             show: true,
             current: {},
+            like_count: 0,
             timeline: [],
             post_list: [],
             user_list: [],
@@ -144,9 +145,12 @@ export default {
         },
         read_timeline_like() {
             this.timeline.forEach(row => {
-                api('like/read', {id: row.id })
+                api('like/read', {where:{post_id: row.id }})
                    .then(r => {
-                       console.log('第'+row.id+'条点赞数为'+ r.data.length);
+                       if(r.data) {
+                           this.like_count = r.data.length;
+                       }
+                    //    console.log('第'+row.id+'条点赞数为'+ r.data.length);
                    })
             })
         },
