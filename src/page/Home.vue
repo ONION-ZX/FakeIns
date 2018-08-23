@@ -5,7 +5,6 @@
             <Row :gutter="30">
                 <Col class="left" span="15">
                     <Card v-for="it in timeline" class="home-card">
-                        {{it}}
                         <p slot="title" class="publisher">{{it.$user.nickname}}</p>
                         <img v-if="it.img_url" class="home" :src="it.img_url">
                         <Row :gutter="12">
@@ -18,7 +17,7 @@
                             </Col>
                         </Row>
                         <div class="row">
-                            <span class="praise">5,050 次赞</span>
+                            <span class="praise">{{it.like_count}} 次赞</span>
                         </div>
                         <Row class="detail home">
                             <Row>
@@ -50,10 +49,14 @@
                                 </Row>
                             </Row>
                             <Row class="add_comment">
-                                <Col span="22">
-                                    <input type="text" placeholder="添加评论...">
-                                </Col>
-                                <Col span="2">...</Col>
+                                <Form @submit.native.prevent="comment(it)">
+                                    <Col span="21">
+                                        <input v-model="form.content" type="text" placeholder="添加评论...">
+                                    </Col>
+                                    <Col span="3">
+                                        <Button type="default" html-type="submit">提交</Button>
+                                    </Col>
+                                </Form>
                             </Row>
                         </Row>
                     </Card>
@@ -116,6 +119,7 @@ import Nav from '../components/Nav';
 export default {
     components: { Nav},
     mounted() {
+        this.init_form();
         this.read();
         this.read_all();
         this.read_followed();
@@ -124,8 +128,8 @@ export default {
     data() {
         return {
             show: true,
-            current: {},
-            like_count: 0,
+            current: {}, //当前用户信息
+            form: {}, //评论表单
             timeline: [],
             post_list: [],
             user_list: [],
@@ -137,6 +141,20 @@ export default {
         }        
     },
     methods: {
+        init_form() {
+            this.form = {
+                user_id: this.uinfo.id,
+                reply_to: null,
+            };
+        },
+        comment(it) {
+            this.form.post_id = it.id;
+            api('comment/create',this.form)
+                .then(r => {
+                    this.init_form();
+                    this.comment_list.unshift(r.data);
+                })
+        },
         like(it) {
             api('like/create',{post_id: it.id, user_id: it.user_id})
                .then(r => {
@@ -148,9 +166,8 @@ export default {
                 api('like/read', {where:{post_id: row.id }})
                    .then(r => {
                        if(r.data) {
-                           this.like_count = r.data.length;
+                           row.like_count = r.data.length || 0;
                        }
-                    //    console.log('第'+row.id+'条点赞数为'+ r.data.length);
                    })
             })
         },
@@ -191,8 +208,9 @@ export default {
                 ],
                 limit: 5,
                 with: this.with,
-            }).then(r => this.timeline = r.data)
-              .then(() => this.read_timeline_like());
+            }).then(r => {
+                this.timeline = r.data;
+            }).then(() => this.read_timeline_like());
         },
         follow(user) {
             api('user/bind', {
