@@ -170,17 +170,31 @@ export default {
                 })
         },
         like(it) {
-            api('like/create',{post_id: it.id, user_id: it.user_id})
-               .then(r => {
-                   this.read_timeline_like();
-               })
+            api('user/bind',{
+                model: 'user',
+                glue: {
+                    [this.uinfo.id]: it.id,
+                }
+            }).then(r => {
+                this.read_timeline_like();
+            })
+        },
+        cancel_like(it) {
+            api('user/unbind',{
+                model: 'user',
+                glue: {
+                    [this.uinfo.id]: it.id,
+                }
+            }).then(r => {
+                this.read_timeline_like();
+            })
         },
         read_timeline_like() {
             this.timeline.forEach(row => {
-                api('like/read', {where:{post_id: row.id }})
+                api('_bind__post_user/read', {where:{post_id: row.id }})
                    .then(r => {
                        if(r.data) {
-                           row.like_count = r.data.length || 0;
+                           console.log(r.data);
                        }
                    })
             })
