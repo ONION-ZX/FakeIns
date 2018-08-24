@@ -70,7 +70,7 @@ export default {
                     return;
                 }
                 this.on_login_success(row);
-                this.$router.push('/');
+                this.$router.push('/view');
                 alert('Yo');
             });
         },

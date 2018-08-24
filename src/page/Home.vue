@@ -7,7 +7,7 @@
                     <Card v-for="it in timeline" class="home-card">
                         <p slot="title" class="publisher">{{it.$user.nickname}}</p>
                         <img v-if="it.img_url" class="home" :src="it.img_url">
-                        <Row :gutter="12">
+                        <Row :gutter="12" class="icon-group">
                             <Col class="home icon" span="22">
                                 <Icon @click.native="like(it)" style="padding-left:10px" class="home" type="ios-heart-outline" size="28"/>
                                 <Icon class="home" type="ios-chatbubbles-outline" size="28"/>
@@ -21,7 +21,7 @@
                         </div>
                         <Row class="detail home">
                             <Row>
-                                <Col span="5" class="publisher home">{{it.$user.nickname}}</Col>
+                                <Col span="2" class="publisher home">{{it.$user.nickname}}</Col>
                                 <Col span="19" class="desc home">{{it.content}}</Col>
                             </Row>
                             <Row v-if="it.comment_list">
@@ -29,7 +29,7 @@
                             </Row>
                             <Row  class="comments">
                                 <Row v-for="comment in it.comment_list" class="content">
-                                    <Col span="3" class="other home">{{comment.$user.nickname}}</Col>
+                                    <Col span="2" class="other home">{{comment.$user.nickname}}</Col>
                                     <Col span="17" class="desc home">{{comment.content}}</Col>
                                     <Col span="2" class="desc home">
                                         <Button size="small" type="default">回复</Button>
@@ -140,7 +140,6 @@ export default {
     methods: {
         show_cinput(event, id) {
             let target = event.currentTarget;
-            console.log(target)
             if(target.dataset.val == id) {
                 this.show_comment_input = true;   
             }
@@ -180,24 +179,28 @@ export default {
                 }
         },
         like(it) {
-            api('user/bind',{
-                model: 'post',
-                glue: {
-                    [this.uinfo.id]: it.id,
-                }
-            }).then(r => {
-                this.read_timeline_like(it.id);
-            })
-        },
-        cancel_like(it) {
-            api('user/unbind',{
-                model: 'user',
-                glue: {
-                    [this.uinfo.id]: it.id,
-                }
-            }).then(r => {
-                this.read_timeline_like();
-            })
+            //判断我是否赞过这条微博, 读_bind__post_user表
+            api('_bind__post_user/read', {where:{and: {post_id: it.id, user_id: this.uinfo.id}}})
+                .then(r => {
+                    if(r.data) {
+                        api('user/unbind',{
+                            model: 'post',
+                            glue: {
+                                [this.uinfo.id]: it.id,
+                            }
+                        }).then(r => {
+                            this.read_timeline_like(it.id);
+                        })
+                    } else {
+                        api('user/bind', {
+                            model: 'post',
+                            glue: {
+                                [this.uinfo.id]: it.id,                            }
+                        }).then(r => {
+                            this.read_timeline_like(it.id);
+                        })
+                    }
+                });
         },
         read_timeline_like(id) {
             if(!id)
@@ -336,6 +339,9 @@ export default {
         margin-top: 5px;
         font-weight: bold;
         font-size: 15px;
+    }
+    .icon-group {
+        padding-top: 10px;
     }
     .ivu-row .comment,
     .ivu-row .ago{

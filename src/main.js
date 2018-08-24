@@ -25,9 +25,9 @@ Vue.use(iView);
 
 const router = new VueRouter({
   routes: [
-    { path: '/', component: Home },
+    { path: '/view', component: Home },
     { path: '/me', component: Me },
-    { path: '/login', component: Login },
+    { path: '/', component: Login },
     { path: '/signup', component: Signup },
     { path: '/publisher', component: Publisher },
     { path: '/people', component: People },
