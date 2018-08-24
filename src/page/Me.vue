@@ -206,7 +206,6 @@ export default {
         read_my_followed() {
             api('_bind__user_user/read',{where: {follower_id: this.uinfo.id}})
                 .then(r => {
-                    console.log(r.data);
                     this.my_followed_list = r.data;
                 })
         },

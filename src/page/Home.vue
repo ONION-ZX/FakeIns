@@ -17,7 +17,7 @@
                             </Col>
                         </Row>
                         <div class="row" v-if="it.like_list">
-                            <span class="praise">{{it.like_list.length}}</span>
+                            <span class="praise">{{it.like_list.length}}次赞</span>
                         </div>
                         <Row class="detail home">
                             <Row>
@@ -45,8 +45,8 @@
                             <Row class="add_comment">
                                 <Form @submit.native.prevent="comment(it)">
                                     <Col span="21">
-                                        <input @click="show_comment_input=true" v-model="form.content" type="text" placeholder="添加评论...">
-                                        <input v-if="!show_comment_input" type="text">
+                                        <input v-model="form.content" v-if="show_comment_input" :data-val="it.id" @click="show_cinput($event, it.id)" type="text" placeholder="添加评论...">
+                                        <input v-else type="text"></input>
                                     </Col>
                                     <Col span="3">
                                         <Button type="default" html-type="submit">提交</Button>
@@ -117,7 +117,7 @@ export default {
     mounted() {
         this.init_form();
         this.read();
-        // this.read_all();
+        this.read_all();
         this.read_followed();
     },
     data() {
@@ -129,7 +129,7 @@ export default {
             post_list: [],
             user_list: [],
             followed_list: [],
-            show_comment_input: false,
+            show_comment_input: true,
             // comment_list:[],
             uinfo: session.uinfo(),
             with: [
@@ -138,6 +138,13 @@ export default {
         }        
     },
     methods: {
+        show_cinput(event, id) {
+            let target = event.currentTarget;
+            console.log(target)
+            if(target.dataset.val == id) {
+                this.show_comment_input = true;   
+            }
+        },
         init_form() {
             this.form = {
                 user_id: this.uinfo.id,
@@ -196,15 +203,18 @@ export default {
             if(!id)
                 return;
 
-            api('_bind__post_user/read')
+            api('_bind__post_user/read',{where: {post_id:id}})
                    .then(r => {
                        console.log(r.data);
                    })
-            
-            // api('like/read',{where: {post_id:id}, with: [{model:'post', relation: 'belongs_to_many'}]})
-            //        .then(r => {
-            //            console.log(r.data);
-            //        })
+        },
+        read_timeline_like() {
+            this.timeline.forEach(row => {
+                api('_bind__post_user/read',{where: {post_id:row.id}})
+                   .then(r => {
+                       row.like_list = r.data;
+                   })
+            })
         },
         read() {
             api('user/read', {where: {id: this.uinfo.id}})
