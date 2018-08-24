@@ -116,7 +116,7 @@ export default {
     directives: { focus },
     mounted() {
         this.init_form();
-        // this.read();
+        this.read();
         // this.read_all();
         this.read_followed();
     },
@@ -192,18 +192,6 @@ export default {
                 this.read_timeline_like();
             })
         },
-        // read_timeline_like() {
-        //     this.timeline.forEach(row => {
-        //         api('_bind__post_user/read')
-        //            .then(r => {
-        //                if(r.data) {
-        //                    row.like_list = r.data;
-        //                    console.log(row.like_list);
-        //                }
-        //            })
-        //     })
-        // },
-
         read_timeline_like(id) {
             if(!id)
                 return;
@@ -238,7 +226,7 @@ export default {
                     model: 'user',
                 }]
             }).then(r => {
-                this.followed_list = r.data.$user;
+                this.followed_list = r.data.$user || [];
             }).then(() => {
                 this.read_timeline();
                 this.read_comment();
@@ -246,10 +234,7 @@ export default {
         },
         read_timeline () {
             //自己发的微博也算到时间线内
-            if(this.followed_list)
-                this.followed_list.push(this.current);
-            if(!this.followed_list)
-                return;
+            this.followed_list.push(this.current);
             api('post/read', {
                 where : [
                     [ 'user_id', 'in', this.pluck_arr(this.followed_list, 'id') ],
@@ -257,7 +242,7 @@ export default {
                 limit: 5,
                 with: this.with,
             }).then(r => {
-                this.timeline = r.data;
+                this.timeline = r.data || [];
             }).then(() => {
                 this.read_timeline_like();
                 this.read_comment();
@@ -318,8 +303,8 @@ export default {
         padding: 0;
     }
     .ivu-card img {
-        width: 100%;
-        /* height: 550px; */
+        max-width: 100%;
+        height: 500px;
     }
     .ivu-icon.home {
         font-weight: bold;
