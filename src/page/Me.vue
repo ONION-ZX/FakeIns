@@ -8,7 +8,6 @@
                 </Col>
                 <Col class="me-info" span="15" offset="1">
                     <Row class="me-top">
-                        {{me}}
                         <Col class="me-name" span="4">{{me.nickname}}</Col>
                         <Col class="me-edit" span="3">
                             <Button type="default">编辑个人主页</Button>
@@ -19,13 +18,13 @@
                     </Row>
                     <Row class="me-act">
                         <Col span="4">
-                            <h3>61 帖子</h3>
+                            <h3>{{my_posts ? my_posts.length : 0}} 帖子</h3>
                         </Col>
                         <Col span="4">
-                            <h3>2096 粉丝</h3>
+                            <h3>{{my_follower_list ? my_follower_list.length : 0}} 粉丝</h3>
                         </Col>
                         <Col span="4">
-                            <h3>正在关注 82</h3>
+                            <h3>正在关注 {{my_followed_list ? my_followed_list.length : 0}}</h3>
                         </Col>
                     </Row>
                     <Row class="me-bio">
@@ -180,10 +179,17 @@ export default {
     components: { Nav, Footer },
     mounted() {
         this.read_me();
+        this.read_my_followed();
+        this.read_my_post();
+        this.read_my_followers();
     },
     data() {
         return {
             me: {},
+            my_followed_list: [],
+            my_follower_list: [],
+            my_posts: [],
+            my_followers: [],
             uinfo: session.uinfo(),
             with: [
                     {relation: 'has_many', model: 'post'},
@@ -196,7 +202,25 @@ export default {
                 .then(r => {
                     this.me = r.data[0];
                 })
-        }
+        },
+        read_my_followed() {
+            api('_bind__user_user/read',{where: {follower_id: this.uinfo.id}})
+                .then(r => {
+                    this.my_followed_list = r.data;
+                })
+        },
+        read_my_post() {
+            api('post/read',{where:{user_id: this.uinfo.id}})
+                .then(r => {
+                    this.my_posts = r.data;
+                })
+        },
+        read_my_followers() {
+            api('_bind__user_user/read',{where: {target_id: this.uinfo.id}})
+                .then(r => {
+                    this.my_follower_list = r.data;
+                })
+        },
     }
 }
 </script>

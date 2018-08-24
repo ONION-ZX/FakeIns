@@ -45,8 +45,8 @@
                             <Row class="add_comment">
                                 <Form @submit.native.prevent="comment(it)">
                                     <Col span="21">
-                                        <input @click="show_comment_input=true" v-if="show_comment_input" v-model="form.content" type="text" placeholder="添加评论...">
-                                        <input v-else type="text" placeholder="添加评论...">
+                                        <input @click="show_comment_input=true" v-model="form.content" type="text" placeholder="添加评论...">
+                                        <input v-if="!show_comment_input" type="text">
                                     </Col>
                                     <Col span="3">
                                         <Button type="default" html-type="submit">提交</Button>
@@ -165,7 +165,7 @@ export default {
                 })
         },
         delete_comment(id) {
-            if(confirm('确认要删除评论?')) {
+            if(confirm('确认要删除自己的评论?')) {
                 api('comment/delete', {id})
                     .then(r => {
                         this.read_comment();
