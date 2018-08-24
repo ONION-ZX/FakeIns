@@ -16,37 +16,28 @@
                                 <Icon class="home" type="ios-bookmark-outline" size="28"/>
                             </Col>
                         </Row>
-                        <div class="row">
-                            <span class="praise">{{it.like_count}} 次赞</span>
+                        <div class="row" v-if="it.like_list">
+                            <span class="praise">{{it.like_list.length}}</span>
                         </div>
                         <Row class="detail home">
                             <Row>
                                 <Col span="5" class="publisher home">{{it.$user.nickname}}</Col>
                                 <Col span="19" class="desc home">{{it.content}}</Col>
                             </Row>
-                            <Row>
-                                <span class="comment">全部 {{it.comment_list ? it.comment_list.length : 0}} 条评论</span>
+                            <Row v-if="it.comment_list">
+                                <span class="comment">全部 {{it.comment_list.length}}条评论 </span>
                             </Row>
-                            <Row class="comments">
+                            <Row  class="comments">
                                 <Row v-for="comment in it.comment_list" class="content">
                                     <Col span="3" class="other home">{{comment.$user.nickname}}</Col>
-                                    <Col span="16" class="desc home">{{comment.content}}</Col>
-                                    <Col span="3" class="desc home">
+                                    <Col span="17" class="desc home">{{comment.content}}</Col>
+                                    <Col span="2" class="desc home">
                                         <Button size="small" type="default">回复</Button>
                                     </Col>
+                                    <Col span="2" class="desc home">
+                                        <Button @click="delete_comment(comment.id)" size="small" type="default">删除</Button>
+                                    </Col>
                                 </Row>
-                                <!-- <Row class="content">
-                                    <Col span="3" class="other home">eddie_jan</Col>
-                                    <Col span="19" class="desc home">歡迎</Col>
-                                </Row>
-                                <Row class="content">
-                                    <Col span="3" class="other home">baozhuxi</Col>
-                                    <Col span="19" class="desc home">Yo Taipei is the best</Col>
-                                </Row>
-                                <Row class="content">
-                                    <Col span="3" class="other home">jokejoki_</Col>
-                                    <Col span="19" class="desc home">誒！後面的滴哥和滴妹！</Col>
-                                </Row> -->
                                 <Row class="line">
                                     <span class="ago">19小时前</span>
                                 </Row>
@@ -54,7 +45,8 @@
                             <Row class="add_comment">
                                 <Form @submit.native.prevent="comment(it)">
                                     <Col span="21">
-                                        <input v-model="form.content" type="text" placeholder="添加评论...">
+                                        <input @click="show_comment_input=true" v-if="show_comment_input" v-model="form.content" type="text" placeholder="添加评论...">
+                                        <input v-else type="text" placeholder="添加评论...">
                                     </Col>
                                     <Col span="3">
                                         <Button type="default" html-type="submit">提交</Button>
@@ -118,8 +110,10 @@
 import api from '../lib/api';
 import session from '../lib/session';
 import Nav from '../components/Nav';
+import focus from '../directives/focus';
 export default {
     components: { Nav},
+    directives: { focus },
     mounted() {
         this.init_form();
         // this.read();
@@ -135,6 +129,7 @@ export default {
             post_list: [],
             user_list: [],
             followed_list: [],
+            show_comment_input: false,
             // comment_list:[],
             uinfo: session.uinfo(),
             with: [
@@ -169,14 +164,22 @@ export default {
                     this.read_comment();
                 })
         },
+        delete_comment(id) {
+            if(confirm('确认要删除评论?')) {
+                api('comment/delete', {id})
+                    .then(r => {
+                        this.read_comment();
+                    })
+                }
+        },
         like(it) {
             api('user/bind',{
-                model: 'user',
+                model: 'post',
                 glue: {
                     [this.uinfo.id]: it.id,
                 }
             }).then(r => {
-                this.read_timeline_like();
+                this.read_timeline_like(it.id);
             })
         },
         cancel_like(it) {
@@ -189,15 +192,31 @@ export default {
                 this.read_timeline_like();
             })
         },
-        read_timeline_like() {
-            this.timeline.forEach(row => {
-                api('_bind__post_user/read', {where:{post_id: row.id }})
+        // read_timeline_like() {
+        //     this.timeline.forEach(row => {
+        //         api('_bind__post_user/read')
+        //            .then(r => {
+        //                if(r.data) {
+        //                    row.like_list = r.data;
+        //                    console.log(row.like_list);
+        //                }
+        //            })
+        //     })
+        // },
+
+        read_timeline_like(id) {
+            if(!id)
+                return;
+
+            api('_bind__post_user/read')
                    .then(r => {
-                       if(r.data) {
-                           console.log(r.data);
-                       }
+                       console.log(r.data);
                    })
-            })
+            
+            // api('like/read',{where: {post_id:id}, with: [{model:'post', relation: 'belongs_to_many'}]})
+            //        .then(r => {
+            //            console.log(r.data);
+            //        })
         },
         read() {
             api('user/read', {where: {id: this.uinfo.id}})
