@@ -1,0 +1,22 @@
+<script>
+    let url = 'http://www.nowcoder.com?key=1&key=2&key=3&test=4#hehe';
+    let param_arr = url.split('?')[1].split('&');
+    let param_obj = {};
+    for(let i in param_arr) {
+        let param = param_arr[i].split('=');
+        let key = param[0];
+        let value = param[1];
+        param_obj[key] = value;
+        let key_arr = Object.keys(param_obj);
+        key_arr.forEach(row => {
+            if(row == key) {
+                param_obj[key] += ',' + value;
+                console.log(param_obj);
+            } else {
+                param_obj[key] = value;
+                console.log(param_obj);
+            }
+            console.log(param_obj);
+        })
+    }
+</script>

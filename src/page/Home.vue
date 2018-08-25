@@ -44,9 +44,9 @@
                             </Row>
                             <Row class="add_comment">
                                 <Form @submit.native.prevent="comment(it)">
-                                    <Col span="21">
-                                        <input v-model="form.content" v-if="show_comment_input" :data-val="it.id" @click="show_cinput($event, it.id)" type="text" placeholder="添加评论...">
-                                        <input v-else type="text"></input>
+                                    <Col @click.native="show_cinput(it.id)" span="21">
+                                        <input v-if="on_click_input == it.id" v-model="form.content" :data-val="it.id" type="text" placeholder="添加评论...">
+                                        <input v-else type="text">
                                     </Col>
                                     <Col span="3">
                                         <Button type="default" html-type="submit">提交</Button>
@@ -135,14 +135,16 @@ export default {
             with: [
                 {relation: 'has_one', model: 'user'},
             ],
+            on_click_input :'',
         }        
     },
     methods: {
-        show_cinput(event, id) {
-            let target = event.currentTarget;
-            if(target.dataset.val == id) {
-                this.show_comment_input = true;   
-            }
+        test() {
+            console.log(1);
+        },
+        show_cinput(id) {
+            this.on_click_input = id;
+            console.log(this.on_click_input);
         },
         init_form() {
             this.form = {
