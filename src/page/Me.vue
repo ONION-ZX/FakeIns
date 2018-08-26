@@ -173,8 +173,8 @@
             <Row class="meset-win" v-if="show_meset_win">
                 <Row class="set-item">更改密码</Row>
                 <Row class="set-item">隐私与安全</Row>
-                <Row class="set-item">登出</Row>
-                <Row class="set-item">取消</Row>
+                <Row class="set-item" @click.native="logout()">登出</Row>
+                <Row class="set-item" @click.native="show_meset_win=false">取消</Row>
             </Row>
         </div>
     </div>
@@ -208,6 +208,10 @@ export default {
         }
     },
     methods: {
+        logout() {
+            localStorage.removeItem('uinfo');
+            this.$router.push('/');
+        },
         show_setwin() {
             this.show_meset_win = !this.show_meset_win;
             

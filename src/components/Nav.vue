@@ -144,7 +144,7 @@
         margin-right: 9px;
     }
     .love img {
-        width: 92%;
+        width: 113%;
     }
     .operate .user {
         padding-top: 4px;

@@ -11,5 +11,9 @@ export default {
     },
     uinfo() {
         return JSON.parse(localStorage.getItem('uinfo')) || '';
-    }
+    },
+    logout() {
+        localStorage.removeItem('uinfo');
+        this.$router.push('/');
+    },
 }
