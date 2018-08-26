@@ -30,9 +30,10 @@
                             <Row  class="comments">
                                 <Row v-for="comment in it.comment_list" class="content">
                                     <Col span="2" class="other home">{{comment.$user.nickname}}</Col>
-                                    <Col span="17" class="desc home">{{comment.content}}</Col>
+                                    <Col span="17" v-if="comment.reply_to" class="desc home">@{{comment.reply_to}}{{comment.content}}</Col>
+                                    <Col span="17" v-else class="desc home">{{comment.content}}</Col>
                                     <Col span="2" class="desc home">
-                                        <Button size="small" type="default">回复</Button>
+                                        <Button size="small" @click.native="on_click_input = form.reply_to = it.id" type="default">回复</Button>
                                     </Col>
                                     <Col span="2" class="desc home">
                                         <Button @click="delete_comment(comment.id)" size="small" type="default">删除</Button>
@@ -45,8 +46,8 @@
                             <Row class="add_comment">
                                 <Form @submit.native.prevent="comment(it)">
                                     <Col @click.native="show_cinput(it.id)" span="21">
-                                        <input v-if="on_click_input == it.id" v-model="form.content" :data-val="it.id" type="text" placeholder="添加评论...">
-                                        <input v-else type="text">
+                                        <input v-focus v-if="(on_click_input == it.id) || (form.reply_to == it.id)" v-model="form.content" :data-val="it.id" type="text" placeholder="添加评论...">
+                                        <input v-else type="text" placeholder="添加评论...">
                                     </Col>
                                     <Col span="3">
                                         <Button type="default" html-type="submit">提交</Button>
@@ -139,12 +140,8 @@ export default {
         }        
     },
     methods: {
-        test() {
-            console.log(1);
-        },
         show_cinput(id) {
             this.on_click_input = id;
-            console.log(this.on_click_input);
         },
         init_form() {
             this.form = {
