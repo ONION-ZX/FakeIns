@@ -3,7 +3,7 @@
         <Nav/>
         <div class="container">
             <Row v-if="timeline.length" :gutter="30">
-                <Col class="left" span="15">
+                <Col class="left" span="12" offset="2">
                     <Card v-for="it in timeline" class="home-card">
                         <p slot="title" class="publisher">{{it.$user.nickname}}</p>
                         <img v-if="it.img_url" class="home" :src="it.img_url">
