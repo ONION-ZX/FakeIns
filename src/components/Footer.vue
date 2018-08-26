@@ -28,7 +28,7 @@ export default {
 </script>
 <style>
     .global_footer {
-        margin-top: 100px;
+        margin-top: 80px;
         padding: 10px;
         margin-bottom: 53px;
     }

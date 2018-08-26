@@ -50,22 +50,25 @@
                         </Col>
                     </Row>
                     <Row :gutter="20" class="me-main-content">
-                        <Col span="8" class="me-post" v-if="my_posts">
-                            <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-16/91769821.jpg">
+                        <Col span="8" v-for="it in my_posts" class="me-post" v-if="my_posts">
+                            <img :src="it.img_url">
                             <div class="me-post-layer">
                                 <Row class="me-layer-params">
-                                    <Col span="8">
-                                        <Col span="3">
-                                            <Icon type="md-heart" size="25" offset="4" color="#fff"/>
+                                    <Row>
+                                        <Col span="8">
+                                            <Col span="3">
+                                                <Icon type="md-heart" size="25" offset="4" color="#fff"/>
+                                            </Col>
+                                            <Col class="me-post-data" span="3" offset="4">{{it.like_list ? it.like_list.length : 0}}</Col>
                                         </Col>
-                                        <Col class="me-post-data" span="3" offset="4">6,245</Col>
-                                    </Col>
-                                    <Col span="8">
-                                        <Col span="3">
-                                            <Icon type="ios-chatbubbles"size="25" offset="4" color="#fff" />
+                                        <Col span="8">
+                                            <Col span="3">
+                                                <Icon type="ios-chatbubbles"size="25" offset="4" color="#fff" />
+                                            </Col>
+                                            <Col class="me-post-data" span="3" offset="4">{{it.comment_list ? it.comment_list.length : 0}}</Col>
                                         </Col>
-                                        <Col class="me-post-data" span="3" offset="4">50</Col>
-                                    </Col>
+                                    </Row>
+                                    <!-- <Row class="me-post-data content">{{it.content}}</Row> -->
                                 </Row>
                             </div>
                         </Col>
