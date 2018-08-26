@@ -26,10 +26,11 @@ export default {
     
 }
 </script>
-<style scoped>
+<style>
     .global_footer {
         margin-top: 100px;
         padding: 10px;
+        margin-bottom: 53px;
     }
     .global_footer a,
     .global_footer span{
@@ -43,6 +44,7 @@ export default {
     }
     .global_footer span {
         padding: 5px;
+        margin-right: 18px;
     }
     .footer-right {
         font-weight: bold;

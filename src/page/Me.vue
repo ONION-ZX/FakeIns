@@ -1,172 +1,182 @@
 <template>
     <div>
-        <Nav/>
-        <div class="container me">
-            <Row class="me-header" :gutter="20">
-                <Col span="5" class="avatar" offset="2">
-                    <img :src="me.avatar_url ? me.avatar_url : 'http://pcim2j6mo.bkt.clouddn.com//18-8-16/7258985.jpg'">
-                </Col>
-                <Col class="me-info" span="15" offset="1">
-                    <Row class="me-top">
-                        <Col class="me-name" span="4">{{me.nickname}}</Col>
-                        <Col class="me-edit" span="3">
-                            <Button type="default">编辑个人主页</Button>
-                        </Col>
-                        <Col class="me-set" span="15" offset="2">
-                            <Icon type="ios-settings-outline" size="30" color="#262626" />
-                        </Col>
-                    </Row>
-                    <Row class="me-act">
-                        <Col span="4">
-                            <h3>{{my_posts ? my_posts.length : 0}} 帖子</h3>
-                        </Col>
-                        <Col span="4">
-                            <h3>{{my_follower_list ? my_follower_list.length : 0}} 粉丝</h3>
-                        </Col>
-                        <Col span="4">
-                            <h3>正在关注 {{my_followed_list ? my_followed_list.length : 0}}</h3>
-                        </Col>
-                    </Row>
-                    <Row class="me-bio">
-                        <p>{{me.bio}}</p>
-                        <!-- <p>(づ￣3￣）づ╭❤～</p> -->
-                    </Row>
-                </Col>
-            </Row>
-            <Row class="me-main">
-                <Row class="me-main-title">
-                    <Col class="title-item" span="5" offset="6">
-                        <Icon type="ios-aperture-outline" size="16"/>
-                        <span>帖子</span>
+        <div :class="{'opacity':show_meset_win}">
+            <Nav/>
+            <div class="container me">
+                <Row class="me-header" :gutter="20">
+                    <Col span="5" class="avatar" offset="2">
+                        <img :src="me.avatar_url ? me.avatar_url : 'http://pcim2j6mo.bkt.clouddn.com//18-8-16/7258985.jpg'">
                     </Col>
-                    <Col class="title-item" span="5">
-                        <Icon type="ios-bookmark-outline" size="18" />
-                        <span>收藏夹</span>
-                    </Col>
-                    <Col class="title-item" span="5">
-                        <Icon type="ios-flag-outline" size="24"/>
-                        <span>已标记</span>
+                    <Col class="me-info" span="15" offset="1">
+                        <Row class="me-top">
+                            <Col class="me-name" span="4">{{me.nickname}}</Col>
+                            <Col class="me-edit" span="3">
+                                <Button type="default">编辑个人主页</Button>
+                            </Col>
+                            <Col @click.native="show_setwin()" class="me-set" span="13" offset="3">
+                                <Icon type="ios-settings-outline" size="30" color="#262626" />
+                            </Col>
+                        </Row>
+                        <Row class="me-act">
+                            <Col span="4">
+                                <h3>{{my_posts ? my_posts.length : 0}} 帖子</h3>
+                            </Col>
+                            <Col span="4">
+                                <h3>{{my_follower_list ? my_follower_list.length : 0}} 粉丝</h3>
+                            </Col>
+                            <Col span="4">
+                                <h3>正在关注 {{my_followed_list ? my_followed_list.length : 0}}</h3>
+                            </Col>
+                        </Row>
+                        <Row class="me-bio">
+                            <p>{{me.bio}}</p>
+                            <!-- <p>(づ￣3￣）づ╭❤～</p> -->
+                        </Row>
                     </Col>
                 </Row>
-                <Row :gutter="20" class="me-main-content">
-                    <Col span="8" class="me-post">
-                        <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-16/91769821.jpg">
-                        <div class="me-post-layer">
-                            <Row class="me-layer-params">
-                                <Col span="8">
-                                    <Col span="3">
-                                        <Icon type="md-heart" size="25" offset="4" color="#fff"/>
+                <Row class="me-main">
+                    <Row class="me-main-title">
+                        <Col class="title-item" span="5" offset="6">
+                            <Icon type="ios-aperture-outline" size="16"/>
+                            <span>帖子</span>
+                        </Col>
+                        <Col class="title-item" span="5">
+                            <Icon type="ios-bookmark-outline" size="18" />
+                            <span>收藏夹</span>
+                        </Col>
+                        <Col class="title-item" span="5">
+                            <Icon type="ios-flag-outline" size="24"/>
+                            <span>已标记</span>
+                        </Col>
+                    </Row>
+                    <Row :gutter="20" class="me-main-content">
+                        <Col span="8" class="me-post">
+                            <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-16/91769821.jpg">
+                            <div class="me-post-layer">
+                                <Row class="me-layer-params">
+                                    <Col span="8">
+                                        <Col span="3">
+                                            <Icon type="md-heart" size="25" offset="4" color="#fff"/>
+                                        </Col>
+                                        <Col class="me-post-data" span="3" offset="4">6,245</Col>
                                     </Col>
-                                    <Col class="me-post-data" span="3" offset="4">6,245</Col>
-                                </Col>
-                                <Col span="8">
-                                    <Col span="3">
-                                        <Icon type="ios-chatbubbles"size="25" offset="4" color="#fff" />
+                                    <Col span="8">
+                                        <Col span="3">
+                                            <Icon type="ios-chatbubbles"size="25" offset="4" color="#fff" />
+                                        </Col>
+                                        <Col class="me-post-data" span="3" offset="4">50</Col>
                                     </Col>
-                                    <Col class="me-post-data" span="3" offset="4">50</Col>
-                                </Col>
-                            </Row>
-                        </div>
-                    </Col>
-                    <Col span="8" class="me-post">
-                        <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-16/79698180.jpg">
-                        <div class="me-post-layer">
-                            <Row class="me-layer-params">
-                                <Col span="8">
-                                    <Col span="3">
-                                        <Icon type="md-heart" size="25" offset="4" color="#fff"/>
+                                </Row>
+                            </div>
+                        </Col>
+                        <Col span="8" class="me-post">
+                            <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-16/79698180.jpg">
+                            <div class="me-post-layer">
+                                <Row class="me-layer-params">
+                                    <Col span="8">
+                                        <Col span="3">
+                                            <Icon type="md-heart" size="25" offset="4" color="#fff"/>
+                                        </Col>
+                                        <Col class="me-post-data" span="3" offset="4">6,245</Col>
                                     </Col>
-                                    <Col class="me-post-data" span="3" offset="4">6,245</Col>
-                                </Col>
-                                <Col span="8">
-                                    <Col span="3">
-                                        <Icon type="ios-chatbubbles"size="25" offset="4" color="#fff" />
+                                    <Col span="8">
+                                        <Col span="3">
+                                            <Icon type="ios-chatbubbles"size="25" offset="4" color="#fff" />
+                                        </Col>
+                                        <Col class="me-post-data" span="3" offset="4">50</Col>
                                     </Col>
-                                    <Col class="me-post-data" span="3" offset="4">50</Col>
-                                </Col>
-                            </Row>
-                        </div>
-                    </Col>
-                    <Col span="8" class="me-post">
-                        <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-16/28948870.jpg">
-                        <div class="me-post-layer">
-                            <Row class="me-layer-params">
-                                <Col span="8">
-                                    <Col span="3">
-                                        <Icon type="md-heart" size="25" offset="4" color="#fff"/>
+                                </Row>
+                            </div>
+                        </Col>
+                        <Col span="8" class="me-post">
+                            <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-16/28948870.jpg">
+                            <div class="me-post-layer">
+                                <Row class="me-layer-params">
+                                    <Col span="8">
+                                        <Col span="3">
+                                            <Icon type="md-heart" size="25" offset="4" color="#fff"/>
+                                        </Col>
+                                        <Col class="me-post-data" span="3" offset="4">6,245</Col>
                                     </Col>
-                                    <Col class="me-post-data" span="3" offset="4">6,245</Col>
-                                </Col>
-                                <Col span="8">
-                                    <Col span="3">
-                                        <Icon type="ios-chatbubbles"size="25" offset="4" color="#fff" />
+                                    <Col span="8">
+                                        <Col span="3">
+                                            <Icon type="ios-chatbubbles"size="25" offset="4" color="#fff" />
+                                        </Col>
+                                        <Col class="me-post-data" span="3" offset="4">50</Col>
                                     </Col>
-                                    <Col class="me-post-data" span="3" offset="4">50</Col>
-                                </Col>
-                            </Row>
-                        </div>
-                    </Col>
-                    <Col span="8" class="me-post">
-                        <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-16/73802475.jpg">
-                        <div class="me-post-layer">
-                            <Row class="me-layer-params">
-                                <Col span="8">
-                                    <Col span="3">
-                                        <Icon type="md-heart" size="25" offset="4" color="#fff"/>
+                                </Row>
+                            </div>
+                        </Col>
+                        <Col span="8" class="me-post">
+                            <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-16/73802475.jpg">
+                            <div class="me-post-layer">
+                                <Row class="me-layer-params">
+                                    <Col span="8">
+                                        <Col span="3">
+                                            <Icon type="md-heart" size="25" offset="4" color="#fff"/>
+                                        </Col>
+                                        <Col class="me-post-data" span="3" offset="4">6,245</Col>
                                     </Col>
-                                    <Col class="me-post-data" span="3" offset="4">6,245</Col>
-                                </Col>
-                                <Col span="8">
-                                    <Col span="3">
-                                        <Icon type="ios-chatbubbles"size="25" offset="4" color="#fff" />
+                                    <Col span="8">
+                                        <Col span="3">
+                                            <Icon type="ios-chatbubbles"size="25" offset="4" color="#fff" />
+                                        </Col>
+                                        <Col class="me-post-data" span="3" offset="4">50</Col>
                                     </Col>
-                                    <Col class="me-post-data" span="3" offset="4">50</Col>
-                                </Col>
-                            </Row>
-                        </div>
-                    </Col>
-                    <Col span="8" class="me-post">
-                        <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-16/1563166.jpg">
-                        <div class="me-post-layer">
-                            <Row class="me-layer-params">
-                                <Col span="8">
-                                    <Col span="3">
-                                        <Icon type="md-heart" size="25" offset="4" color="#fff"/>
+                                </Row>
+                            </div>
+                        </Col>
+                        <Col span="8" class="me-post">
+                            <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-16/1563166.jpg">
+                            <div class="me-post-layer">
+                                <Row class="me-layer-params">
+                                    <Col span="8">
+                                        <Col span="3">
+                                            <Icon type="md-heart" size="25" offset="4" color="#fff"/>
+                                        </Col>
+                                        <Col class="me-post-data" span="3" offset="4">6,245</Col>
                                     </Col>
-                                    <Col class="me-post-data" span="3" offset="4">6,245</Col>
-                                </Col>
-                                <Col span="8">
-                                    <Col span="3">
-                                        <Icon type="ios-chatbubbles"size="25" offset="4" color="#fff" />
+                                    <Col span="8">
+                                        <Col span="3">
+                                            <Icon type="ios-chatbubbles"size="25" offset="4" color="#fff" />
+                                        </Col>
+                                        <Col class="me-post-data" span="3" offset="4">50</Col>
                                     </Col>
-                                    <Col class="me-post-data" span="3" offset="4">50</Col>
-                                </Col>
-                            </Row>
-                        </div>
-                    </Col>
-                    <Col span="8" class="me-post">
-                        <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-16/7258985.jpg">
-                        <div class="me-post-layer">
-                            <Row class="me-layer-params">
-                                <Col span="8">
-                                    <Col span="3">
-                                        <Icon type="md-heart" size="25" offset="4" color="#fff"/>
+                                </Row>
+                            </div>
+                        </Col>
+                        <Col span="8" class="me-post">
+                            <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-16/7258985.jpg">
+                            <div class="me-post-layer">
+                                <Row class="me-layer-params">
+                                    <Col span="8">
+                                        <Col span="3">
+                                            <Icon type="md-heart" size="25" offset="4" color="#fff"/>
+                                        </Col>
+                                        <Col class="me-post-data" span="3" offset="4">6,245</Col>
                                     </Col>
-                                    <Col class="me-post-data" span="3" offset="4">6,245</Col>
-                                </Col>
-                                <Col span="8">
-                                    <Col span="3">
-                                        <Icon type="ios-chatbubbles"size="25" offset="4" color="#fff" />
+                                    <Col span="8">
+                                        <Col span="3">
+                                            <Icon type="ios-chatbubbles"size="25" offset="4" color="#fff" />
+                                        </Col>
+                                        <Col class="me-post-data" span="3" offset="4">50</Col>
                                     </Col>
-                                    <Col class="me-post-data" span="3" offset="4">50</Col>
-                                </Col>
-                            </Row>
-                        </div>
-                    </Col>
+                                </Row>
+                            </div>
+                        </Col>
+                    </Row>
                 </Row>
+            </div>
+            <Footer/>
+        </div>
+        <div>
+            <Row class="meset-win" v-if="show_meset_win">
+                <Row class="set-item">更改密码</Row>
+                <Row class="set-item">隐私与安全</Row>
+                <Row class="set-item">登出</Row>
+                <Row class="set-item">取消</Row>
             </Row>
         </div>
-        <Footer/>
     </div>
 </template>
 <script>
@@ -190,6 +200,7 @@ export default {
             my_follower_list: [],
             my_posts: [],
             my_followers: [],
+            show_meset_win: false,
             uinfo: session.uinfo(),
             with: [
                     {relation: 'has_many', model: 'post'},
@@ -197,6 +208,10 @@ export default {
         }
     },
     methods: {
+        show_setwin() {
+            this.show_meset_win = !this.show_meset_win;
+            
+        },
         read_me() {
             api('user/read', {where: {id: this.uinfo.id}, with: this.with})
                 .then(r => {
@@ -226,8 +241,34 @@ export default {
 </script>
 
 <style>
+    .opacity {
+        opacity: .1;
+        /* background: rgba(0,0,0,.5); */
+    }
     .container.me {
         color: #262626;
+        position: relative;
+    }
+    .meset-win {
+        border-radius: 10px;
+        text-align: center;
+        position: absolute;
+        z-index: 2;
+        top: 25%;
+        left: 40%;
+        background: #fff;
+        width: 350px;
+    }
+    .meset-win .set-item {
+        cursor: pointer;
+        color: #000;
+        padding-top: 12px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #efefef;
+        font-size: 14px;
+    }
+    .meset-win .set-item:last-child {
+        border-bottom: 0;
     }
     .me-header {
       padding-bottom: 20px;

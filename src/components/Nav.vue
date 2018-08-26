@@ -4,7 +4,7 @@
             <Col class="search" span="3"></Col>
             <Col class="logo" span="16">
                 <Col span="8">
-                    <router-link to="/">
+                    <router-link to="/view">
                         <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-15/65748165.jpg">
                     </router-link>
                 </Col>
@@ -22,7 +22,6 @@
                 <Col span="3" class="nav-recommand">
                     <router-link to="/explore">
                         <Icon type="ios-compass-outline" color="#262626" size="23"/>
-                        <!-- <img class="recommand" src="http://pcim2j6mo.bkt.clouddn.com//18-8-15/17506210.jpg"> -->
                     </router-link>
                 </Col>
             </Col>
@@ -132,7 +131,7 @@
         border-bottom:1px solid rgba(0,0,0,.0975);
     }
     .logo img {
-        width: 70%;
+        width: 60%;
     }
     .search {
         padding-top: 10px;
@@ -145,7 +144,7 @@
         margin-right: 9px;
     }
     .love img {
-        width: 127%;
+        width: 92%;
     }
     .operate .user {
         padding-top: 4px;
