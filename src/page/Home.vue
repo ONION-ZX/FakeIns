@@ -3,9 +3,16 @@
         <Nav/>
         <div class="container">
             <Row v-if="timeline.length" :gutter="30">
-                <Col class="left" span="12" offset="2">
+                <Col class="left" span="13" offset="2">
                     <Card v-for="it in timeline" class="home-card">
-                        <p slot="title" class="publisher">{{it.$user.nickname}}</p>
+                        <router-link :to="'/publisher/'+ it.user_id" class="card-title">
+                            <Row :gutter="10">
+                                <Col span="9" class="avatar-thumb">
+                                    <img :src="it.$user.avatar_url ? it.$user.avatar_url : 'http://pcim2j6mo.bkt.clouddn.com//18-8-16/1563166.jpg'">
+                                </Col>      
+                                <Col span="10" offset="3">{{it.$user.nickname}}</Col>
+                            </Row>
+                        </router-link>
                         <img v-if="it.img_url" class="home" :src="it.img_url">
                         <Row :gutter="12" class="icon-group">
                             <Col class="home icon" span="22">
@@ -411,6 +418,12 @@ export default {
 </script>
 
 <style>
+    .card-title {
+        display: inline-block;
+        padding: 12px;
+        font-weight: bold;
+        color: #262626;
+    }
     .home.explore {
         margin-top: 80px;
         margin-bottom: 20px;
@@ -435,8 +448,14 @@ export default {
         padding: 0;
     }
     .ivu-card img {
-        max-width: 100%;
-        height: 500px;
+        width: 100%;
+        /* height: 500px; */
+    }
+    .avatar-thumb img {
+        display: inline-block;
+        border-radius: 50%;
+        width: 35px;
+        height: 35px;
     }
     .ivu-icon.home {
         font-weight: bold;
