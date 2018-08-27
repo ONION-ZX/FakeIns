@@ -123,6 +123,7 @@
         color: transparent;
         position: absolute;
         opacity: 0;
+        cursor: pointer;
     }
     .nav {
         background: #fff;

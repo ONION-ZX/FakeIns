@@ -3,9 +3,12 @@
         <div :class="{'opacity':show_meset_win}">
             <Nav/>
             <div class="container me">
+                <!-- <input @change="upload_avatar()" type="file" id="uploader"> -->
                 <Row class="me-header" :gutter="20">
-                    <Col span="5" class="avatar" offset="2">
-                        <img :src="me.avatar_url ? me.avatar_url : 'http://pcim2j6mo.bkt.clouddn.com//18-8-16/7258985.jpg'">
+                    <Col span="5" class="avatar upload-col" offset="2">
+                        <input class="up up-avatar" @change="upload_avatar()" type="file" id="uploader">
+                        <img class="down" :src="me.avatar_url ? me.avatar_url : 'http://pcim2j6mo.bkt.clouddn.com//18-8-16/7258985.jpg'">
+                        <span class="note">上传头像</span>
                     </Col>
                     <Col class="me-info" span="15" offset="1">
                         <Row class="me-top">
@@ -153,14 +156,45 @@ export default {
                     this.my_follower_list = r.data;
                 })
         },
+        upload_avatar() {
+            const uploader = document.getElementById('uploader');
+            let file = uploader.files[ 0 ];
+            let fd   = new FormData();
+            fd.append("file", file);
+            fd.append('name', 'my-file.jpg');
+            fd.append('age', 18);
+            api('_file/create', fd)
+            .then(r => {
+                let data  = r.data;
+                let image = document.createElement('img');
+                image.src = 'http://' + data._base_url + '/' + data._key;
+                document.body.appendChild(image);
+            });
+        }
     }
 }
 </script>
 
 <style>
+    .up-avatar {
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+    }
+    .avatar:hover{
+        opacity: .8;
+    }
+    .avatar:hover .note {
+        display: block;
+        left: 30%;
+    }
     .opacity {
         opacity: .2;
-        background: rgba(0,0,0,.4);
+        background: rgba(0,0,0,.1);
+    }
+    .note {
+        position: relative;
+        display: none;
     }
     .container.me {
         color: #262626;
@@ -196,6 +230,8 @@ export default {
       color: #262626;
    }
    .avatar img {
+       display: inline-block;
+       position: relative;
        max-width: 90%;
        border-radius: 50%;
    } 
