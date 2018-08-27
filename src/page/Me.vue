@@ -127,8 +127,10 @@ export default {
                 return this.me.avatar_url;
             else if(!this.newavatar_url && !this.me.avatar_url)
                 return 'http://pcim2j6mo.bkt.clouddn.com//18-8-16/7258985.jpg';
-            else if(this.newavatar_url)
-                return this.newavatar_url;
+            else if(this.newavatar_url) {
+                api('user/update',{id: this.uinfo.id,avatar_url:this.newavatar_url})
+                    return this.newavatar_url;
+            }
         },
         logout() {
             localStorage.removeItem('uinfo');
