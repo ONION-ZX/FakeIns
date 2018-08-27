@@ -7,7 +7,7 @@
                 <Row class="me-header" :gutter="20">
                     <Col span="5" class="avatar upload-col" offset="2">
                         <input class="up up-avatar" @change="upload_avatar()" type="file" id="uploader">
-                        <img class="down" :src="me.avatar_url ? me.avatar_url : 'http://pcim2j6mo.bkt.clouddn.com//18-8-16/7258985.jpg'">
+                        <img class="down" :src="get_avatar()">
                         <span class="note">上传头像</span>
                     </Col>
                     <Col class="me-info" span="15" offset="1">
@@ -113,6 +113,7 @@ export default {
             my_follower_list: [],
             my_posts: [],
             my_followers: [],
+            newavatar_url: '',
             show_meset_win: false,
             uinfo: session.uinfo(),
             with: [
@@ -121,6 +122,14 @@ export default {
         }
     },
     methods: {
+        get_avatar() {
+            if(!this.newavatar_url && this.me.avatar_url) 
+                return this.me.avatar_url;
+            else if(!this.newavatar_url && !this.me.avatar_url)
+                return 'http://pcim2j6mo.bkt.clouddn.com//18-8-16/7258985.jpg';
+            else if(this.newavatar_url)
+                return this.newavatar_url;
+        },
         logout() {
             localStorage.removeItem('uinfo');
             this.$router.push('/');
@@ -167,8 +176,7 @@ export default {
             .then(r => {
                 let data  = r.data;
                 let image = document.createElement('img');
-                image.src = 'http://' + data._base_url + '/' + data._key;
-                document.body.appendChild(image);
+                this.newavatar_url = 'http://' + data._base_url + '/' + data._key;
             });
         }
     }
