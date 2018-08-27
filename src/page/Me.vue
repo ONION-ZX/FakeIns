@@ -143,7 +143,6 @@ export default {
             api('post/read',{where:{user_id: this.uinfo.id}})
                 .then(r => {
                     this.my_posts = r.data;
-                    console.log(this.my_posts);
                 })
         },
         delete_my_post() {

@@ -421,6 +421,7 @@ export default {
     .card-title {
         display: inline-block;
         padding: 12px;
+        padding-bottom: 0;
         font-weight: bold;
         color: #262626;
     }
