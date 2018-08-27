@@ -49,8 +49,8 @@
                             <span>已标记</span>
                         </Col>
                     </Row>
-                    <Row :gutter="20" class="me-main-content">
-                        <Col span="8" v-for="it in my_posts" class="me-post" v-if="my_posts">
+                    <Row v-if="my_posts" :gutter="20" class="me-main-content">
+                        <Col span="8" v-for="it in my_posts" class="me-post">
                             <img :src="it.img_url">
                             <div class="me-post-layer">
                                 <Row class="me-layer-params">
@@ -68,13 +68,12 @@
                                             <Col class="me-post-data" span="3" offset="4">{{it.comment_list ? it.comment_list.length : 0}}</Col>
                                         </Col>
                                     </Row>
-                                    <!-- <Row class="me-post-data content">{{it.content}}</Row> -->
                                 </Row>
                             </div>
                         </Col>
-                        <Row class="me-post" v-else>
-                            <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-26/25274372.jpg">
-                        </Row>
+                    </Row>
+                    <Row class="me-post" v-else>
+                        <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-26/25274372.jpg">
                     </Row>
                 </Row>
             </div>

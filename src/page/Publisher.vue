@@ -46,8 +46,8 @@
                         <span>已标记</span>
                     </Col>
                 </Row>
-                <Row v-for="it in post_list" v-if="post_list" :gutter="20" class="me-main-content">
-                    <Col span="8" class="me-post">
+                <Row v-if="post_list" :gutter="20" class="me-main-content">
+                    <Col span="8" class="me-post" v-for="it in post_list">
                         <img :src="it.img_url ? it.img_url : 'http://pcim2j6mo.bkt.clouddn.com//18-8-17/27840293.jpg'">
                         <div class="me-post-layer">
                             <Row class="me-layer-params">
