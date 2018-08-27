@@ -74,7 +74,7 @@ export default {
                 .then(r => {
                     this.invalid_code = false;
                     alert('注册成功!');
-                    this.$router.push('/login');
+                    this.$router.push('/');
                 });
         },
         send_code() {

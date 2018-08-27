@@ -116,105 +116,15 @@
                         <h2>推荐用户</h2>
                     </Row>
                     <Row class="explore-content">
-                        <Row :gutter="20" class="explore-row">
+                        <Row v-for="it in explore_list" :gutter="20" class="explore-row">
                             <Col span="4" class="explore-avatar">
-                                <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-17/27840293.jpg">
+                                <img :src="it.avatar_url ? it.avatar_url : 'http://pcim2j6mo.bkt.clouddn.com//18-8-16/7258985.jpg'">
                             </Col>
                             <Col span="16" class="explore-avatar">
                                 <Row class="e-name">
-                                    <h3>ivanmartinez</h3>
-                                </Row>
-                                <Row class="e-bio">Ivan Martínez</Row>
-                                <Row class="e-source">Instagram 推荐</Row>
-                            </Col>
-                            <Col span="3">
-                                <Button class="e-focus" type="primary">关注</Button>
-                            </Col>
-                        </Row>
-                        <Row :gutter="20" class="explore-row">
-                            <Col span="4" class="explore-avatar">
-                                <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-17/92101297.jpg">
-                            </Col>
-                            <Col span="16" class="explore-avatar">
-                                <Row class="e-name">
-                                    <h3>rihannasaucy</h3>
+                                    <h3>{{it.nickname}}</h3>
                                 </Row>
                                 <Row class="e-bio">R I H A N N A</Row>
-                                <Row class="e-source">Instagram 推荐</Row>
-                            </Col>
-                            <Col span="3">
-                                <Button class="e-focus" type="primary">关注</Button>
-                            </Col>
-                        </Row>
-                        <Row :gutter="20" class="explore-row">
-                            <Col span="4" class="explore-avatar">
-                                <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-17/82592208.jpg">
-                            </Col>
-                            <Col span="16" class="explore-avatar">
-                                <Row class="e-name">
-                                    <h3>liuwenlw</h3>
-                                </Row>
-                                <Row class="e-bio">Liu Wen (刘雯)</Row>
-                                <Row class="e-source">Instagram 推荐</Row>
-                            </Col>
-                            <Col span="3">
-                                <Button class="e-focus" type="primary">关注</Button>
-                            </Col>
-                        </Row>
-                        <Row :gutter="20" class="explore-row">
-                            <Col span="4" class="explore-avatar">
-                                <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-18/93039025.jpg">
-                            </Col>
-                            <Col span="16" class="explore-avatar">
-                                <Row class="e-name">
-                                    <h3>belindapop</h3>
-                                </Row>
-                                <Row class="e-bio">Beli</Row>
-                                <Row class="e-source">Instagram 推荐</Row>
-                            </Col>
-                            <Col span="3">
-                                <Button class="e-focus" type="primary">关注</Button>
-                            </Col>
-                        </Row>
-                        <Row :gutter="20" class="explore-row">
-                            <Col span="4" class="explore-avatar">
-                                <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-17/80592937.jpg">
-                            </Col>
-                            <Col span="16" class="explore-avatar">
-                                <Row class="e-name">
-                                    <h3>ivanmartinez</h3>
-                                </Row>
-                                <Row class="e-bio">Ivan Martínez</Row>
-                                <Row class="e-source">Instagram 推荐</Row>
-                            </Col>
-                            <Col span="3">
-                                <Button class="e-focus" type="primary">关注</Button>
-                            </Col>
-                        </Row>
-                        <Row :gutter="20" class="explore-row">
-                            <Col span="4" class="explore-avatar">
-                                <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-17/92101297.jpg">
-                            </Col>
-                            <Col span="16" class="explore-avatar">
-                                <Row class="e-name">
-                                    <h3>rihannasaucy</h3>
-                                </Row>
-                                <Row class="e-bio">R I H A N N A</Row>
-                                <Row class="e-source">Instagram 推荐</Row>
-                            </Col>
-                            <Col span="3">
-                                <Button class="e-focus" type="primary">关注</Button>
-                            </Col>
-                        </Row>
-                        <Row :gutter="20" class="explore-row">
-                            <Col span="4" class="explore-avatar">
-                                <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-17/82592208.jpg">
-                            </Col>
-                            <Col span="16" class="explore-avatar">
-                                <Row class="e-name">
-                                    <h3>liuwenlw</h3>
-                                </Row>
-                                <Row class="e-bio">Liu Wen (刘雯)</Row>
                                 <Row class="e-source">Instagram 推荐</Row>
                             </Col>
                             <Col span="3">
@@ -243,6 +153,8 @@ export default {
         this.read();
         this.read_all();
         this.read_followed();
+        this.read_explore_people();
+        this.delete();
     },
     data() {
         return {
@@ -254,7 +166,7 @@ export default {
             user_list: [],
             followed_list: [],
             show_comment_input: true,
-            // comment_list:[],
+            explore_list: [],
             uinfo: session.uinfo(),
             with: [
                 {relation: 'has_one', model: 'user'},
@@ -263,6 +175,15 @@ export default {
         }        
     },
     methods: {
+        delete() {
+            api('post/delete_many',{in:[0,1,2,3]})
+        },
+        read_explore_people() {
+            api('user/read',{where: [['id','!=',this.uinfo.id]],limit: 8})
+                .then(r => {
+                    this.explore_list = r.data;
+                })
+        },
         show_cinput(id) {
             this.on_click_input = id;
         },
