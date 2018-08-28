@@ -53,7 +53,7 @@
                             <Row class="add_comment">
                                 <Form @submit.native.prevent="comment(it)">
                                     <Col @click.native="show_cinput(it.id)" span="21">
-                                        <input v-focus v-if="(on_click_input == it.id) || (form.reply_to == it.id)" v-model="form.content" :data-val="it.id" type="text" placeholder="添加评论...">
+                                        <input v-focus v-if="(on_click_input == it.id) || (form.reply_to == it.id)" v-model="form.content" type="text" placeholder="添加评论...">
                                         <input v-else type="text" placeholder="添加评论...">
                                     </Col>
                                     <Col span="3">
@@ -127,8 +127,9 @@
                                 <Row class="e-bio">R I H A N N A</Row>
                                 <Row class="e-source">Instagram 推荐</Row>
                             </Col>
-                            <Col span="3">
-                                <Button class="e-focus" type="primary">关注</Button>
+                            <Col span="3" @click.native="on_click_btn=it.id">
+                                <Button v-if="it.id==on_click_btn" class="e-focus" type="default" @click.native="unfollow_explore(it)">已关注</Button>
+                                <Button v-else class="e-focus" type="primary" @click.native="follow_explore(it)">关注</Button>
                             </Col>
                         </Row>
                     </Row>
@@ -154,7 +155,7 @@ export default {
         this.read_all();
         this.read_followed();
         this.read_explore_people();
-        this.delete();
+        // this.delete();
     },
     data() {
         return {
@@ -167,11 +168,13 @@ export default {
             followed_list: [],
             show_comment_input: true,
             explore_list: [],
+            btn_text: '关注',
             uinfo: session.uinfo(),
             with: [
                 {relation: 'has_one', model: 'user'},
             ],
             on_click_input :'',
+            on_click_btn: '',
         }        
     },
     methods: {
@@ -323,6 +326,23 @@ export default {
                 }
             }).then(r => {
                 this.read_followed();
+                this.btn_text = '关注';
+            })
+        },
+        follow_explore(user) {
+            api('user/bind', {
+                model: 'user',
+                glue: {
+                    [this.uinfo.id]: user.id,
+                }
+            });
+        },
+        unfollow_explore(user) {
+            api('user/unbind', {
+                model: 'user',
+                glue: {
+                    [this.uinfo.id]: user.id,
+                }
             })
         },
         pluck_arr(arr, key) {
