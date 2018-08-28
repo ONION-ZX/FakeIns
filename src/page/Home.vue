@@ -118,7 +118,10 @@
                     <Row class="explore-content">
                         <Row v-for="it in explore_list" :gutter="20" class="explore-row">
                             <Col span="4" class="explore-avatar">
-                                <img :src="it.avatar_url ? it.avatar_url : 'http://pcim2j6mo.bkt.clouddn.com//18-8-16/7258985.jpg'">
+
+                                <router-link :to="'/publisher/'+it.id">
+                                    <img :src="it.avatar_url ? it.avatar_url : 'http://pcim2j6mo.bkt.clouddn.com//18-8-16/7258985.jpg'">
+                                </router-link>
                             </Col>
                             <Col span="16" class="explore-avatar">
                                 <Row class="e-name">
