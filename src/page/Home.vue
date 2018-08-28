@@ -127,7 +127,7 @@
                                 <Row class="e-bio">R I H A N N A</Row>
                                 <Row class="e-source">Instagram 推荐</Row>
                             </Col>
-                            <Col span="3" @click.native="on_click_btn=it.id">
+                            <Col span="3">
                                 <Button v-if="it.id==on_click_btn" class="e-focus" type="default" @click.native="unfollow_explore(it)">已关注</Button>
                                 <Button v-else class="e-focus" type="primary" @click.native="follow_explore(it)">关注</Button>
                             </Col>
@@ -335,7 +335,9 @@ export default {
                 glue: {
                     [this.uinfo.id]: user.id,
                 }
-            });
+            }).then(r => {
+                this.on_click_btn = user.id;
+            })
         },
         unfollow_explore(user) {
             api('user/unbind', {
@@ -343,6 +345,8 @@ export default {
                 glue: {
                     [this.uinfo.id]: user.id,
                 }
+            }).then(r => {
+                this.on_click_btn = '';
             })
         },
         pluck_arr(arr, key) {
