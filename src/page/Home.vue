@@ -111,7 +111,7 @@
                 </Col>
             </Row>
             <Row v-else class="home explore">
-                <Col class="explore-people" span="20" offset="1">
+                <Col class="explore-people" span="15" offset="5">
                     <Row class="explore-title">
                         <h2>推荐用户</h2>
                     </Row>
@@ -131,7 +131,7 @@
                                 <Row class="e-source">Instagram 推荐</Row>
                             </Col>
                             <Col span="3">
-                                <Button v-if="it.id==on_click_btn" class="e-focus" type="default" @click.native="unfollow_explore(it)">已关注</Button>
+                                <Button v-if="it.focused" class="e-focus" type="default" @click.native="unfollow_explore(it)">已关注</Button>
                                 <Button v-else class="e-focus" type="primary" @click.native="follow_explore(it)">关注</Button>
                             </Col>
                         </Row>
@@ -182,7 +182,7 @@ export default {
     },
     methods: {
         delete() {
-            api('post/delete_many',{in:[0,1,2,3]})
+            api('post/delete',{id:38})
         },
         read_explore_people() {
             api('user/read',{where: [['id','!=',this.uinfo.id]],limit: 8})
@@ -339,7 +339,7 @@ export default {
                     [this.uinfo.id]: user.id,
                 }
             }).then(r => {
-                this.on_click_btn = user.id;
+                user.focused = true;
             })
         },
         unfollow_explore(user) {
@@ -349,7 +349,7 @@ export default {
                     [this.uinfo.id]: user.id,
                 }
             }).then(r => {
-                this.on_click_btn = '';
+                user.focused = false;
             })
         },
         pluck_arr(arr, key) {
