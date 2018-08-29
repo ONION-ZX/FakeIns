@@ -79,6 +79,7 @@
                     .then(r => {
                         this.postins = {};
                         document.querySelector('.uploaded_list').innerHTML = '';
+                        alert('分享成功!');
                     })
             },
             post_img() {

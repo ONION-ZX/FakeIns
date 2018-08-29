@@ -182,7 +182,7 @@ export default {
     },
     methods: {
         delete() {
-            api('post/delete',{id:30})
+            api('post/delete',{id:39})
         },
         read_explore_people() {
             api('user/read',{where: [['id','!=',this.uinfo.id]],limit: 8})

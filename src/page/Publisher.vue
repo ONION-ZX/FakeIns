@@ -78,6 +78,7 @@
         </div>   
         <div>
             <Row class="meset-win" v-if="show_win">
+                <Row class="set-item">私信</Row>
                 <Row class="set-item" @click.native="report_user()">举报用户</Row>
                 <Row class="set-item" @click.native="block_user()">拉黑</Row>
                 <Row class="set-item" @click.native="show_win=false">取消</Row>
