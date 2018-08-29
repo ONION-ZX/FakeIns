@@ -1,79 +1,88 @@
 <template>
     <div>
-        <Nav/>
-        <div class="container me">
-            <Row class="me-header" :gutter="20">
-                <Col span="5" class="avatar" offset="2">
-                    <img :src="publisher_info.avatar_url ? publisher_info.avatar_url : 'http://pcim2j6mo.bkt.clouddn.com//18-8-16/7258985.jpg'">
-                </Col>
-                <Col class="me-info" span="15">
-                    <Row class="me-top">
-                        <Col class="me-name" span="5">{{publisher_info.nickname}}</Col>
-                        <Col class="me-dropdown" span="3" offset="1">
-                            <Button v-if="!focused" type="default" @click="bind_user()">关注</Button>
-                            <Button v-if="focused" type="default" @click="unbind_user()">已关注</Button>
-                        </Col>
-                        <Col class="me-dropdown" span="2">
-                            <Button type="default" icon="md-arrow-dropdown"></Button>
-                        </Col>
-                        <Col class="me-other" span="2" offset="3">
-                            <Button color="#262626">...</Button>
-                        </Col>
-                    </Row>
-                    <Row class="me-act">
-                        <Col span="4">
-                            <h3>{{post_list ? post_list.length : 0}} 帖子</h3>
-                        </Col>
-                        <Col span="4">
-                            <h3>{{follower_list ? follower_list.length : 0}} 粉丝</h3>
-                        </Col>
-                        <Col span="4">
-                            <h3>正在关注 {{target_list ? target_list.length : 0}}</h3>
-                        </Col>
-                    </Row>
-                    <Row class="me-bio">
-                        <p>{{publisher_info.bio}}</p>
-                    </Row>
-                </Col>
-            </Row>
-            <Row class="me-main">
-                <Row class="me-main-title">
-                    <Col class="title-item" span="2" offset="10">
-                        <Icon type="ios-aperture-outline" size="16"/>
-                        <span>帖子</span>
+        <div :class="{'opacity':show_win}">
+            <Nav/>
+            <div class="container me">
+                <Row class="me-header" :gutter="20">
+                    <Col span="5" class="avatar" offset="2">
+                        <img :src="publisher_info.avatar_url ? publisher_info.avatar_url : 'http://pcim2j6mo.bkt.clouddn.com//18-8-16/7258985.jpg'">
                     </Col>
-                    <Col class="title-item" span="3">
-                        <Icon type="ios-flag-outline" size="24"/>
-                        <span>已标记</span>
+                    <Col class="me-info" span="15">
+                        <Row class="me-top">
+                            <Col class="me-name" span="5">{{publisher_info.nickname}}</Col>
+                            <Col class="me-dropdown" span="3" offset="1">
+                                <Button v-if="!focused" type="default" @click="bind_user()">关注</Button>
+                                <Button v-if="focused" type="default" @click="unbind_user()">已关注</Button>
+                            </Col>
+                            <Col class="me-dropdown" span="2">
+                                <Button @click="show_win=!show_win" type="default" icon="md-arrow-dropdown"></Button>
+                            </Col>
+                            <!-- <Col class="me-other" span="2" offset="3">
+                                <Button color="#262626">...</Button>
+                            </Col> -->
+                        </Row>
+                        <Row class="me-act">
+                            <Col span="4">
+                                <h3>{{post_list ? post_list.length : 0}} 帖子</h3>
+                            </Col>
+                            <Col span="4">
+                                <h3>{{follower_list ? follower_list.length : 0}} 粉丝</h3>
+                            </Col>
+                            <Col span="4">
+                                <h3>正在关注 {{target_list ? target_list.length : 0}}</h3>
+                            </Col>
+                        </Row>
+                        <Row class="me-bio">
+                            <p>{{publisher_info.bio}}</p>
+                        </Row>
                     </Col>
                 </Row>
-                <Row v-if="post_list" class="me-main-content">
-                    <Col span="8" class="me-post" v-for="it in post_list">
-                        <img :src="it.img_url ? it.img_url : 'http://pcim2j6mo.bkt.clouddn.com//18-8-17/27840293.jpg'">
-                        <div class="me-post-layer">
-                            <Row class="me-layer-params">
-                                <Col span="8">
-                                    <Col span="3">
-                                        <Icon type="md-heart" size="25" offset="4" color="#fff"/>
+                <Row class="me-main">
+                    <Row class="me-main-title">
+                        <Col class="title-item" span="2" offset="10">
+                            <Icon type="ios-aperture-outline" size="16"/>
+                            <span>帖子</span>
+                        </Col>
+                        <Col class="title-item" span="3">
+                            <Icon type="ios-flag-outline" size="24"/>
+                            <span>已标记</span>
+                        </Col>
+                    </Row>
+                    <Row v-if="post_list" class="me-main-content">
+                        <Col span="8" class="me-post" v-for="it in post_list">
+                            <img :src="it.img_url ? it.img_url : 'http://pcim2j6mo.bkt.clouddn.com//18-8-17/27840293.jpg'">
+                            <div class="me-post-layer">
+                                <Row class="me-layer-params">
+                                    <Col span="8">
+                                        <Col span="3">
+                                            <Icon type="md-heart" size="25" offset="4" color="#fff"/>
+                                        </Col>
+                                        <Col class="me-post-data" span="3" offset="4">{{it.like_list ? it.like_list.length : '0'}}</Col>
                                     </Col>
-                                    <Col class="me-post-data" span="3" offset="4">{{it.like_list ? it.like_list.length : '0'}}</Col>
-                                </Col>
-                                <Col span="8">
-                                    <Col span="3">
-                                        <Icon type="ios-chatbubbles"size="25" offset="4" color="#fff" />
+                                    <Col span="8">
+                                        <Col span="3">
+                                            <Icon type="ios-chatbubbles"size="25" offset="4" color="#fff" />
+                                        </Col>
+                                        <Col class="me-post-data" span="3" offset="4">{{it.comment_list ? it.comment_list.length : '0'}}</Col>
                                     </Col>
-                                    <Col class="me-post-data" span="3" offset="4">{{it.comment_list ? it.comment_list.length : '0'}}</Col>
-                                </Col>
-                            </Row>
-                        </div>
-                    </Col>
+                                </Row>
+                            </div>
+                        </Col>
+                    </Row>
+                    <Row v-else class="no-post">
+                            <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-27/2904431.jpg">
+                    </Row>
                 </Row>
-                <Row v-else class="no-post">
-                        <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-27/2904431.jpg">
-                </Row>
+            </div>
+            <Footer/>
+        </div>   
+        <div>
+            <Row class="meset-win" v-if="show_win">
+                <Row class="set-item" @click.native="report_user()">举报用户</Row>
+                <Row class="set-item" @click.native="block_user()">拉黑</Row>
+                <Row class="set-item" @click.native="show_win=false">取消</Row>
             </Row>
-        </div>
-        <Footer/>
+        </div> 
     </div>
 </template>
 <script>
@@ -100,10 +109,21 @@ export default {
             post_list: [],
             follower_list: [],
             target_list: [],
+            show_win: false,
             uinfo: session.uinfo(),
         }
     },
     methods: {
+        report_user() {
+            if(!confirm('是否要举报此用户?'))
+                return;
+            alert('已举报!');
+        },
+        block_user() {
+            if(!confirm('是否要拉黑此用户?'))
+                return;
+            alert('已拉黑!');
+        },
         bind_user() {
             api('user/bind', {
                 model: 'user',
