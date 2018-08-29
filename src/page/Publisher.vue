@@ -6,10 +6,10 @@
                 <Col span="5" class="avatar" offset="2">
                     <img :src="publisher_info.avatar_url ? publisher_info.avatar_url : 'http://pcim2j6mo.bkt.clouddn.com//18-8-16/7258985.jpg'">
                 </Col>
-                <Col class="me-info" span="15" offset="1">
+                <Col class="me-info" span="15">
                     <Row class="me-top">
-                        <Col class="me-name" span="4">{{publisher_info.nickname}}</Col>
-                        <Col class="me-dropdown" span="3">
+                        <Col class="me-name" span="5">{{publisher_info.nickname}}</Col>
+                        <Col class="me-dropdown" span="3" offset="1">
                             <Button type="default">已关注</Button>
                         </Col>
                         <Col class="me-dropdown" span="2">

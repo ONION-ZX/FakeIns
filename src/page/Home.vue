@@ -7,10 +7,10 @@
                     <Card v-for="it in timeline" class="home-card">
                         <router-link :to="'/publisher/'+ it.user_id" class="card-title">
                             <Row :gutter="10">
-                                <Col span="9" class="avatar-thumb">
+                                <Col span="8" class="avatar-thumb">
                                     <img :src="it.$user.avatar_url ? it.$user.avatar_url : 'http://pcim2j6mo.bkt.clouddn.com//18-8-16/1563166.jpg'">
                                 </Col>      
-                                <Col span="10" offset="3">{{it.$user.nickname}}</Col>
+                                <Col span="10" offset="5">{{it.$user.nickname}}</Col>
                             </Row>
                         </router-link>
                         <img v-if="it.img_url" class="home" :src="it.img_url">
@@ -28,7 +28,7 @@
                         </div>
                         <Row class="detail home">
                             <Row>
-                                <Col span="2" class="publisher home">{{it.$user.nickname}}</Col>
+                                <Col span="3" class="publisher home">{{it.$user.nickname}}</Col>
                                 <Col span="19" class="desc home">{{it.content}}</Col>
                             </Row>
                             <Row v-if="it.comment_list">
@@ -182,7 +182,7 @@ export default {
     },
     methods: {
         delete() {
-            api('post/delete',{id:38})
+            api('post/delete',{id:30})
         },
         read_explore_people() {
             api('user/read',{where: [['id','!=',this.uinfo.id]],limit: 8})

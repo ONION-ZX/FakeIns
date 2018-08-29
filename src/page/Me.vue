@@ -12,7 +12,7 @@
                     </Col>
                     <Col class="me-info" span="15" offset="1">
                         <Row class="me-top">
-                            <Col class="me-name" span="4">{{me.nickname}}</Col>
+                            <Col class="me-name" span="5">{{me.nickname}}</Col>
                             <Col class="me-edit" span="3">
                                 <Button type="default">编辑个人主页</Button>
                             </Col>
