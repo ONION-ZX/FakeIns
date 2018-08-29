@@ -10,7 +10,8 @@
                     <Row class="me-top">
                         <Col class="me-name" span="5">{{publisher_info.nickname}}</Col>
                         <Col class="me-dropdown" span="3" offset="1">
-                            <Button type="default" @click="bind_user()">{{btn_text}}</Button>
+                            <Button v-if="!focused" type="default" @click="bind_user()">关注</Button>
+                            <Button v-if="focused" type="default" @click="unbind_user()">已关注</Button>
                         </Col>
                         <Col class="me-dropdown" span="2">
                             <Button type="default" icon="md-arrow-dropdown"></Button>
@@ -94,6 +95,7 @@ export default {
         return {
             publisher_id: '',
             btn_text: '',
+            focused: '',
             publisher_info: {},
             post_list: [],
             follower_list: [],
@@ -109,7 +111,19 @@ export default {
                     [this.uinfo.id]: parseInt(this.publisher_id),
                 }
             }).then(r => {
-                this.btn_text = '已关注';
+                this.focused = true;
+            })
+        },
+        unbind_user() {
+            if(!confirm('是否取消关注?'))
+                return;
+            api('user/unbind', {
+                model: 'user',
+                glue: {
+                    [this.uinfo.id]: parseInt(this.publisher_id),
+                }
+            }).then(r => {
+                this.focused = false;
             })
         },
         get_publisher_id() {
@@ -143,8 +157,8 @@ export default {
             api('_bind__user_user/read',{where: {follower_id:this.uinfo.id,target_id:this.publisher_id}})
                 .then(r => {
                     if(!r.data)
-                        this.btn_text = '关注';
-                    else this.btn_text = '已关注';
+                        this.focused = false;
+                    else this.focused = true;
                 })
         }
     }
@@ -152,6 +166,9 @@ export default {
 </script>
 
 <style>
+    .ivu-btn-icon-only, .ivu-btn {
+        border-radius: 0;
+    }
     .container.me {
         color: #262626;
     }
