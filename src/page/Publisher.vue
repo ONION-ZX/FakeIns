@@ -10,7 +10,7 @@
                     <Row class="me-top">
                         <Col class="me-name" span="5">{{publisher_info.nickname}}</Col>
                         <Col class="me-dropdown" span="3" offset="1">
-                            <Button type="default">已关注</Button>
+                            <Button type="default">{{btn_text}}</Button>
                         </Col>
                         <Col class="me-dropdown" span="2">
                             <Button type="default" icon="md-arrow-dropdown"></Button>
@@ -21,13 +21,13 @@
                     </Row>
                     <Row class="me-act">
                         <Col span="4">
-                            <h3>61 帖子</h3>
+                            <h3>{{post_list ? post_list.length : 0}} 帖子</h3>
                         </Col>
                         <Col span="4">
-                            <h3>2096 粉丝</h3>
+                            <h3>{{follower_list ? follower_list.length : 0}} 粉丝</h3>
                         </Col>
                         <Col span="4">
-                            <h3>正在关注 82</h3>
+                            <h3>正在关注 {{target_list ? target_list.length : 0}}</h3>
                         </Col>
                     </Row>
                     <Row class="me-bio">
@@ -46,7 +46,7 @@
                         <span>已标记</span>
                     </Col>
                 </Row>
-                <Row v-if="post_list" :gutter="20" class="me-main-content">
+                <Row v-if="post_list" class="me-main-content">
                     <Col span="8" class="me-post" v-for="it in post_list">
                         <img :src="it.img_url ? it.img_url : 'http://pcim2j6mo.bkt.clouddn.com//18-8-17/27840293.jpg'">
                         <div class="me-post-layer">
@@ -79,18 +79,26 @@
 import Footer from '../components/Footer';
 import Nav from '../components/Nav';
 import api from '../lib/api';
+import session from '../lib/session';
 export default {
     components: { Nav, Footer },
     mounted() {
         this.get_publisher_id();
         this.find_publisher();
         this.read_publisher_posts();
+        this.read_target();
+        this.read_follower();
+        this.read_relation();
     },
     data() {
         return {
             publisher_id: '',
+            btn_text: '',
             publisher_info: {},
             post_list: [],
+            follower_list: [],
+            target_list: [],
+            uinfo: session.uinfo(),
         }
     },
     methods: {
@@ -109,6 +117,26 @@ export default {
                     this.post_list = r.data;        
                 })
         },
+        read_follower() {
+            api('_bind__user_user/read',{where:{target_id:this.publisher_id}})
+                .then(r => {
+                    this.follower_list = r.data;
+                })
+        },
+        read_target() {
+            api('_bind__user_user/read',{where: {follower_id: this.publisher_id}})
+                .then(r => {
+                    this.target_list = r.data;
+                })
+        },
+        read_relation() {
+            api('_bind__user_user/read',{where: {follower_id:this.uinfo.id,target_id:this.publisher_id}})
+                .then(r => {
+                    if(!r.data)
+                        this.btn_text = '未关注';
+                    else this.btn_text = '已关注';
+                })
+        }
     }
 }
 </script>

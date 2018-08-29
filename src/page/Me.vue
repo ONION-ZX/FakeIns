@@ -152,6 +152,12 @@ export default {
                     this.my_followed_list = r.data;
                 })
         },
+        read_my_followers() {
+            api('_bind__user_user/read',{where: {target_id: this.uinfo.id}})
+                .then(r => {
+                    this.my_follower_list = r.data;
+                })
+        },
         read_my_post() {
             api('post/read',{where:{user_id: this.uinfo.id}})
                 .then(r => {
@@ -160,12 +166,6 @@ export default {
         },
         delete_my_post() {
             api('post/delete',{id:31})
-        },
-        read_my_followers() {
-            api('_bind__user_user/read',{where: {target_id: this.uinfo.id}})
-                .then(r => {
-                    this.my_follower_list = r.data;
-                })
         },
         upload_avatar() {
             const uploader = document.getElementById('uploader');
