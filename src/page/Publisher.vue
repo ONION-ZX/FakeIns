@@ -10,7 +10,7 @@
                     <Row class="me-top">
                         <Col class="me-name" span="5">{{publisher_info.nickname}}</Col>
                         <Col class="me-dropdown" span="3" offset="1">
-                            <Button type="default">{{btn_text}}</Button>
+                            <Button type="default" @click="bind_user()">{{btn_text}}</Button>
                         </Col>
                         <Col class="me-dropdown" span="2">
                             <Button type="default" icon="md-arrow-dropdown"></Button>
@@ -102,6 +102,16 @@ export default {
         }
     },
     methods: {
+        bind_user() {
+            api('user/bind', {
+                model: 'user',
+                glue: {
+                    [this.uinfo.id]: parseInt(this.publisher_id),
+                }
+            }).then(r => {
+                this.btn_text = '已关注';
+            })
+        },
         get_publisher_id() {
             this.publisher_id = this.$route.params.id;
         },
@@ -133,7 +143,7 @@ export default {
             api('_bind__user_user/read',{where: {follower_id:this.uinfo.id,target_id:this.publisher_id}})
                 .then(r => {
                     if(!r.data)
-                        this.btn_text = '未关注';
+                        this.btn_text = '关注';
                     else this.btn_text = '已关注';
                 })
         }
