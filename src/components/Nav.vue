@@ -78,6 +78,7 @@
                 api('post/create', this.postins)
                     .then(r => {
                         this.postins = {};
+                        document.querySelector('.uploaded_list').innerHTML = '';
                     })
             },
             post_img() {
