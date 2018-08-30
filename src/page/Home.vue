@@ -146,6 +146,7 @@
  /* eslint-disable */ 
 import api from '../lib/api';
 import session from '../lib/session';
+import util from '../lib/util';
 import Footer from '../components/Footer';
 import Nav from '../components/Nav';
 import focus from '../directives/focus';
@@ -299,7 +300,7 @@ export default {
             this.followed_list.push(this.current);
             api('post/read', {
                 where : [
-                    [ 'user_id', 'in', this.pluck_arr(this.followed_list, 'id') ],
+                    [ 'user_id', 'in', util.pluck_arr(this.followed_list, 'id') ],
                 ],
                 limit: 5,
                 with: this.with,

@@ -232,6 +232,18 @@ export default {
         background: #fff;
         width: 350px;
     }
+    .follower_list {
+        border-radius: 10px;
+        position: absolute;
+        z-index: 2;
+        top: 20%;
+        left: 35%;
+        background: #fff;
+        width: 400px;
+    }
+    .follower_list .list-title {
+        text-align: center;
+    }
     .meset-win .set-item {
         cursor: pointer;
         color: #000;

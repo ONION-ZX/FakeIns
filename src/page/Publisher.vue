@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div :class="{'opacity':show_win}">
+        <div :class="{'opacity':show_win||show_follower_list}">
             <Nav/>
             <div class="container me">
                 <Row class="me-header" :gutter="20">
@@ -26,7 +26,7 @@
                                 <h3>{{post_list ? post_list.length : 0}} 帖子</h3>
                             </Col>
                             <Col span="4">
-                                <h3>{{follower_list ? follower_list.length : 0}} 粉丝</h3>
+                                <h3 @click="show_follower_list=!show_follower_list">{{follower_list ? follower_list.length : 0}} 粉丝</h3>
                             </Col>
                             <Col span="4">
                                 <h3>正在关注 {{target_list ? target_list.length : 0}}</h3>
@@ -83,6 +83,36 @@
                 <Row class="set-item" @click.native="block_user()">拉黑</Row>
                 <Row class="set-item" @click.native="show_win=false">取消</Row>
             </Row>
+        </div>
+        <div>
+            <Row class="follower_list" v-if="show_follower_list">
+                <Row class="list-title">
+                    <Col span="18" offset="3">
+                        <span>粉丝</span>
+                    </Col>
+                    <Col span="2">
+                        <Icon @click.native="show_follower_list=false" type="md-close" />
+                    </Col>
+                </Row>
+                <Row class="follower-main">
+                    <Row class="set-item" v-for="it in follower_detail_list">
+                        <Col span="4">
+                            <img style="border-radius:50%;max-width:100%" :src="it.avatar_url ? it.avatar_url : 'http://pcim2j6mo.bkt.clouddn.com//18-8-15/51928164.jpg'">
+                        </Col>
+                        <Col span="15" offset="1">
+                            <Row>
+                                <h3>{{it.nickname}}</h3>
+                            </Row>
+                            <Row>
+                                <p>{{it.bio ? it.bio : ':-p'}}</p>
+                            </Row>
+                        </Col>
+                        <Col span="2">
+                            <Button type="primary">关注</Button>
+                        </Col>
+                    </Row>
+                </Row>
+            </Row>
         </div> 
     </div>
 </template>
@@ -91,6 +121,8 @@ import Footer from '../components/Footer';
 import Nav from '../components/Nav';
 import api from '../lib/api';
 import session from '../lib/session';
+import util from '../lib/util';
+
 export default {
     components: { Nav, Footer },
     mounted() {
@@ -109,8 +141,11 @@ export default {
             publisher_info: {},
             post_list: [],
             follower_list: [],
+            follower_id_list: [],
+            follower_detail_list: [],
             target_list: [],
             show_win: false,
+            show_follower_list: false,
             uinfo: session.uinfo(),
         }
     },
@@ -166,6 +201,8 @@ export default {
             api('_bind__user_user/read',{where:{target_id:this.publisher_id}})
                 .then(r => {
                     this.follower_list = r.data;
+                    this.get_follower_id();
+                    this.get_follower();
                 })
         },
         read_target() {
@@ -181,12 +218,29 @@ export default {
                         this.focused = false;
                     else this.focused = true;
                 })
-        }
+        },
+        get_follower_id() {
+            this.follower_id_list = util.pluck_arr(this.follower_list, 'follower_id');
+        },
+        get_follower() {
+            api('user/find_many',{
+                in: this.follower_id_list,
+                with: {
+                    relation: 'has_one',
+                    model: 'user',
+                }
+            }).then(r => {
+                this.follower_detail_list = r.data;
+            })
+        },
     }
 }
 </script>
 
 <style>
+    h3 {
+        user-select: none;
+    }
     .ivu-btn-icon-only, .ivu-btn {
         border-radius: 0;
     }
@@ -262,6 +316,27 @@ export default {
    }
    .no-post img {
        max-width: 100%;
+   }
+   .list-title {
+       font-weight: bold;
+       font-size: 16px;
+       padding-top: 10px;
+       padding-bottom: 10px;
+       color:#262626;
+   }
+   .follower-main {
+       padding-left: 10px;
+       padding-right: 10px;
+   }
+   .follower-main .set-item, .list-title {
+       border-bottom: 1px solid #efefef
+   }
+   .follower-main .set-item {
+       padding-top: 10px;
+       padding-bottom: 10px;
+   }
+   .follower-main button {
+       margin-top: 10px;
    }
 </style>
 
