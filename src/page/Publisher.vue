@@ -26,7 +26,7 @@
                                 <h3>{{post_list ? post_list.length : 0}} 帖子</h3>
                             </Col>
                             <Col span="4">
-                                <h3 @click="show_follower_list=!show_follower_list">{{follower_list ? follower_list.length : 0}} 粉丝</h3>
+                                <h3 @click="detect_follower()">{{follower_list ? follower_list.length : 0}} 粉丝</h3>
                             </Col>
                             <Col span="4">
                                 <h3>正在关注 {{target_list ? target_list.length : 0}}</h3>
@@ -70,7 +70,7 @@
                         </Col>
                     </Row>
                     <Row v-else class="no-post">
-                            <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-27/2904431.jpg">
+                        <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-27/2904431.jpg">
                     </Row>
                 </Row>
             </div>
@@ -223,6 +223,8 @@ export default {
             this.follower_id_list = util.pluck_arr(this.follower_list, 'follower_id');
         },
         get_follower() {
+            if(!this.follower_list)
+                return;
             api('user/find_many',{
                 in: this.follower_id_list,
                 with: {
@@ -233,6 +235,11 @@ export default {
                 this.follower_detail_list = r.data;
             })
         },
+        detect_follower() {
+            if(!this.follower_list)
+                return;
+            this.show_follower_list=true;
+        }
     }
 }
 </script>
