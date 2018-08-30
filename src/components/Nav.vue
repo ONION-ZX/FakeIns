@@ -17,23 +17,17 @@
                         <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-15/96675976.jpg">
                     </Col>
                 <Col span="3" class="nav-po">
-                    <!-- <Icon type="ios-chatbubbles-outline" color="#262626" size="23"/> -->
-                     <!-- <Dropdown>
-                        <a>
-                            <Icon type="ios-chatbubbles-outline" color="#262626" size="23"/>
-                            <span>{{noti_count}}</span>
-                        </a>
-                        <DropdownMenu slot="noti_list">
-                            <DropdownItem v-for="it in noti_list">{{it.content}}</DropdownItem>
-                        </DropdownMenu>
-                    </Dropdown> -->
                     <Dropdown>
                         <a>
                             <Icon type="ios-chatbubbles-outline" color="#262626" size="23"/>
-                            <span>{{noti_count}}</span>
+                            <span v-if="noti_list">{{noti_count}}</span>
                         </a>
-                        <DropdownMenu slot="list">
-                            <DropdownItem v-for="it in noti_list">{{it.$tpl.content}}</DropdownItem>
+                        <DropdownMenu v-if="noti_list" slot="list">
+                            <DropdownItem @click.native="set_status(it)" v-for="it in noti_list">{{it.$$content}}
+                                <span v-if="it.status=='unread'" @click=set_status(it)>
+                                    <Icon type="ios-medical" />
+                                </span>
+                            </DropdownItem>
                         </DropdownMenu>
                 </Dropdown>
                 </Col>
@@ -85,7 +79,8 @@
         mounted() {
             this.count_noti();
             // this.create_noti();
-            // this.create_notitpl();
+            // this.insert_all_params();
+            this.create_notitpl();
         },  
         data () {
             return {
@@ -98,18 +93,66 @@
             }
         },
         methods: {
-            // create_notitpl() {
-            //     api('noti_tpl/create', {
-            //         name: 'recharge',
-            //         content: '余额不足 请充值',
-            //     })
-            // },
-            // create_noti() {
-            //     api('notification/create', {
-            //         user_id: session.uinfo().id,
-            //         type_id: 1,
-            //     })
-            // },
+            insert_all_params() {
+                this.noti_list.forEach(row => {
+                row.$$content = this.insert_param(row.$tpl.content, row.params);
+                });
+            },
+            insert_param (text, param) {
+                if (!param)
+                  return text;
+                const re = /{{([^}]+)}}/;
+                let r;
+
+                while (r = re.exec(text)) {  
+                  let value = param[ r[ 1 ] ];
+                  text      = text.replace(r[ 0 ], value);
+                  r.index   = 0;
+                }
+                return text;
+            },
+            create_notitpl() {
+                api('noti_tpl/create', {
+                    name: 'recharge succeed',
+                    content: '您已经成功充值{{fee}}元,感谢您的支持!',
+                })
+            },
+            create_noti() {
+                api('notification/create', {
+                    user_id: session.uinfo().id,
+                    type_id: 3,
+                    params: {
+                        fee: 5,
+                    }
+                })
+            },
+            count_noti() {
+                api('notification/read', {
+                    where: {
+                        user_id: session.uinfo().id,
+                        status: 'unread',
+                    },
+                    with: {
+                       relation    : 'belongs_to',
+                       model       : 'noti_tpl',
+                       foreign_key : 'type_id',
+                       as          : 'tpl',
+                    },
+                    limit: 5,
+                }).then(r => {
+                    this.noti_count = r.total;
+                    this.noti_list = r.data;
+                    this.insert_all_params();
+                })
+            },
+            set_status(it) {
+                api('notification/update', {
+                    id: it.id,
+                    status: 'read',
+                }).then(r => {
+                    this.count_noti();
+                })
+            },
             post() {
                 this.postins.user_id = this.uinfo.id;
                 api('post/create', this.postins)
@@ -137,24 +180,7 @@
                     this.postins.img_url = image.src;
                 });
             },
-            count_noti() {
-                api('notification/read', {
-                    where: {
-                        user_id: session.uinfo().id,
-                        status: 'unread',
-                    },
-                    with: {
-                       relation    : 'belongs_to',
-                       model       : 'noti_tpl',
-                       foreign_key : 'type_id',
-                       as          : 'tpl',
-                    },
-                }).then(r => {
-                    this.noti_count = r.total;
-                    this.noti_list = r.data;
-                })
-            },
-        } 
+        }
     }
 </script>
 <style>
