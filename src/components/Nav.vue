@@ -13,13 +13,11 @@
                 </Col>
             </Col>
             <Col class="operate" span="5">
-                <Col @click.native="show_modal=!show_modal" span="3" class="love">
-                        <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-15/96675976.jpg">
-                    </Col>
                 <Col span="3" class="nav-po">
                     <Dropdown>
                         <a>
-                            <Icon type="ios-chatbubbles-outline" color="#262626" size="23"/>
+                            <Icon type="ios-notifications-outline" color="#262626" size="23"/>
+                            <!-- <Icon type="ios-chatbubbles-outline" color="#262626" size="23"/> -->
                             <span v-if="noti_list">{{noti_count}}</span>
                         </a>
                         <DropdownMenu v-if="noti_list" slot="list">
@@ -29,11 +27,19 @@
                                 </span>
                             </DropdownItem>
                         </DropdownMenu>
-                </Dropdown>
+                    </Dropdown>
+                </Col>
+                <Col @click.native="show_modal=!show_modal" span="3" class="love">
+                    <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-15/96675976.jpg">
                 </Col>
                 <Col span="3" class="nav-recommand">
                     <router-link to="/explore">
                         <Icon type="ios-compass-outline" color="#262626" size="23"/>
+                    </router-link>
+                </Col>
+                <Col span="3" class="nav-recommand">
+                    <router-link to="/me">
+                        <Icon type="ios-contact-outline" color="#262626" size="23"/>
                     </router-link>
                 </Col>
             </Col>
@@ -80,7 +86,7 @@
             this.count_noti();
             // this.create_noti();
             // this.insert_all_params();
-            this.create_notitpl();
+            // this.create_notitpl();
         },  
         data () {
             return {
@@ -94,6 +100,8 @@
         },
         methods: {
             insert_all_params() {
+                if(!this.noti_list)
+                    return;
                 this.noti_list.forEach(row => {
                 row.$$content = this.insert_param(row.$tpl.content, row.params);
                 });

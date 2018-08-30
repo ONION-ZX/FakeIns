@@ -4,7 +4,7 @@
             <Nav/>
             <div class="container me">
                 <!-- <input @change="upload_avatar()" type="file" id="uploader"> -->
-                <Row class="me-header" :gutter="20">
+                <Row class="me-header">
                     <Col span="5" class="avatar upload-col" offset="2">
                         <input class="up up-avatar" @change="upload_avatar()" type="file" id="uploader">
                         <img class="down" :src="get_avatar()">
@@ -52,7 +52,7 @@
                             <span>已标记</span>
                         </Col>
                     </Row>
-                    <Row v-if="my_posts" :gutter="20" class="me-main-content">
+                    <Row v-if="my_posts" class="me-main-content">
                         <Col span="8" v-for="it in my_posts" class="me-post">
                             <img :src="it.img_url">
                             <div class="me-post-layer">
@@ -71,6 +71,9 @@
                                             <Col class="me-post-data" span="3" offset="4">{{it.comment_list ? it.comment_list.length : 0}}</Col>
                                         </Col>
                                     </Row>
+                                </Row>
+                                <Row class="me-layer-delete">
+                                    <Icon @click.native="delete_post(it.id)" type="ios-trash-outline" color="#fff" size="24"/>
                                 </Row>
                             </div>
                         </Col>
@@ -180,6 +183,15 @@ export default {
                 let image = document.createElement('img');
                 this.newavatar_url = 'http://' + data._base_url + '/' + data._key;
             });
+        },
+        delete_post(id) {
+            if(!confirm('确认要删除此帖?'))
+                return;
+            api('post/delete',{id})
+                .then(r => {
+                    this.read_my_post();
+                    alert('已删除!');
+                })
         }
     }
 }
@@ -298,5 +310,10 @@ export default {
        top: 45%;
        left: 20%;
    }
+    .me-layer-delete {
+       position: relative;
+       top: 80%;
+       left: 90%;
+    }
 </style>
 
