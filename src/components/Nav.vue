@@ -17,7 +17,25 @@
                         <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-15/96675976.jpg">
                     </Col>
                 <Col span="3" class="nav-po">
-                    <Icon type="ios-chatbubbles-outline" color="#262626" size="23"/>
+                    <!-- <Icon type="ios-chatbubbles-outline" color="#262626" size="23"/> -->
+                     <!-- <Dropdown>
+                        <a>
+                            <Icon type="ios-chatbubbles-outline" color="#262626" size="23"/>
+                            <span>{{noti_count}}</span>
+                        </a>
+                        <DropdownMenu slot="noti_list">
+                            <DropdownItem v-for="it in noti_list">{{it.content}}</DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown> -->
+                    <Dropdown>
+                        <a>
+                            <Icon type="ios-chatbubbles-outline" color="#262626" size="23"/>
+                            <span>{{noti_count}}</span>
+                        </a>
+                        <DropdownMenu slot="list">
+                            <DropdownItem v-for="it in noti_list">{{it.$tpl.content}}</DropdownItem>
+                        </DropdownMenu>
+                </Dropdown>
                 </Col>
                 <Col span="3" class="nav-recommand">
                     <router-link to="/explore">
@@ -64,15 +82,34 @@
     import session from '../lib/session';
     import api from '../lib/api';    
     export default {
+        mounted() {
+            this.count_noti();
+            // this.create_noti();
+            // this.create_notitpl();
+        },  
         data () {
             return {
                 show_modal: false,
                 postins: {},
                 img_url: '',
                 uinfo: session.uinfo(),
+                noti_list: [],
+                noti_count: 0,
             }
         },
         methods: {
+            // create_notitpl() {
+            //     api('noti_tpl/create', {
+            //         name: 'recharge',
+            //         content: '余额不足 请充值',
+            //     })
+            // },
+            // create_noti() {
+            //     api('notification/create', {
+            //         user_id: session.uinfo().id,
+            //         type_id: 1,
+            //     })
+            // },
             post() {
                 this.postins.user_id = this.uinfo.id;
                 api('post/create', this.postins)
@@ -95,11 +132,28 @@
                     let image = document.createElement('img');
                     image.classList.add('upload');
                     let target = document.querySelector('.uploaded_list');
-                    image.src = 'http://' + data._base_url + '/' + data._key;
+                    image.src = 'http://'+ data._base_url + '/' + data._key;
                     target.insertAdjacentElement('afterbegin',image);
                     this.postins.img_url = image.src;
                 });
-            }
+            },
+            count_noti() {
+                api('notification/read', {
+                    where: {
+                        user_id: session.uinfo().id,
+                        status: 'unread',
+                    },
+                    with: {
+                       relation    : 'belongs_to',
+                       model       : 'noti_tpl',
+                       foreign_key : 'type_id',
+                       as          : 'tpl',
+                    },
+                }).then(r => {
+                    this.noti_count = r.total;
+                    this.noti_list = r.data;
+                })
+            },
         } 
     }
 </script>
