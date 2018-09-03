@@ -12,6 +12,7 @@ import Me from './page/Me';
 import Login from './page/Login';
 import Signup from './page/Signup';
 import Publisher from './page/Publisher';
+import Chat from './page/Chat';
 import ExploreBase from './page/explore/Base';
 import Explore from './page/explore/Explore';
 import People from './page/explore/People';
@@ -31,6 +32,7 @@ const router = new VueRouter({
     { path: '/signup', component: Signup },
     { path: '/publisher/:id', component: Publisher },
     { path: '/people', component: People },
+    { path: '/chat', component: Chat },
     { path: '/explore', 
       component: ExploreBase,
       children: [

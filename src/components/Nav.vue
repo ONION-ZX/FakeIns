@@ -15,11 +15,8 @@
             <Col class="operate" span="5">
                 <Col span="3" class="nav-po">
                     <Dropdown>
-                        <a>
-                            <Icon type="ios-notifications-outline" color="#262626" size="23"/>
-                            <!-- <Icon type="ios-chatbubbles-outline" color="#262626" size="23"/> -->
-                            <span v-if="noti_list">{{noti_count}}</span>
-                        </a>
+                        <Icon type="ios-notifications-outline" color="#262626" size="23"/>
+                        <span v-if="noti_list">{{noti_count}}</span>
                         <DropdownMenu v-if="noti_list" slot="list">
                             <DropdownItem @click.native="set_status(it)" v-for="it in noti_list">{{it.$$content}}
                                 <span v-if="it.status=='unread'" @click=set_status(it)>
@@ -27,6 +24,14 @@
                                 </span>
                             </DropdownItem>
                         </DropdownMenu>
+                    </Dropdown>
+                </Col>
+                <Col span="3" class="nav-po">
+                    <Dropdown>
+                        <router-link to="/chat">
+                            <Icon type="ios-chatbubbles-outline" color="#262626" size="23"/>
+                            <span v-if="msg_list">{{msg_count}}</span>
+                        </router-link>
                     </Dropdown>
                 </Col>
                 <Col @click.native="show_modal=!show_modal" span="3" class="love">
@@ -84,6 +89,9 @@
     export default {
         mounted() {
             this.count_noti();
+            this.count_msg();
+            this.read_msg();
+            // this.create_msg();
             // this.create_noti();
             // this.insert_all_params();
             // this.create_notitpl();
@@ -95,7 +103,9 @@
                 img_url: '',
                 uinfo: session.uinfo(),
                 noti_list: [],
+                msg_list: [],
                 noti_count: 0,
+                msg_count: 0,
             }
         },
         methods: {
@@ -134,6 +144,12 @@
                     }
                 })
             },
+            create_msg() {
+                api('msg/create',{from:1,to: 6,content: 'yo.im 1'})
+                    .then(r => {
+                        this.read_msg();
+                    })
+            },
             count_noti() {
                 api('notification/read', {
                     where: {
@@ -153,6 +169,18 @@
                     this.insert_all_params();
                 })
             },
+            count_msg() {
+                api('msg/count')
+                    .then(r => {
+                        this.msg_count = r.data;
+                    })
+            },
+            read_msg() {
+                api('msg/read',{where:{to:this.uinfo.id}})
+                    .then(r => {
+                        this.msg_list = r.data;
+                    })
+            },  
             set_status(it) {
                 api('notification/update', {
                     id: it.id,
