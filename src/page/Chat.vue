@@ -3,7 +3,7 @@
         
         <div class="container">
             <Row class="chat-title">
-                <Col span="15">
+                <Col span="19">
                     <h2>Direct Messages</h2>
                 </Col>
                 <Col span="1">
