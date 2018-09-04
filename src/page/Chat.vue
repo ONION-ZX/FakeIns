@@ -18,51 +18,40 @@
             </Row>
             <Row :gutter="20" class="chat-body">
                 <Col span="8">
-                    <Row :gutter="20" class="friend active">
+                    <Row @click.native="show_current_chat(it)" v-for="it in contact_list" :gutter="20" :class="{'friend':true,'active':it.id == on_click_id}">
                         <Col span="5">
-                            <img src="http://pcim2j6mo.bkt.clouddn.com//18-9-3/99724575.jpg">
+                            <img :src="it.avatar_url">
                         </Col>
                         <Col span="5">
-                            <Row class="friend-name">WHH</Row>
+                            <Row class="friend-name">{{it.nickname}}</Row>
                             <Row class="recent-chat">Hello :)</Row>
-                        </Col>
-                    </Row>
-                    <Row :gutter="20" class="friend">
-                        <Col span="5">
-                            <img src="http://pcim2j6mo.bkt.clouddn.com//18-8-16/1563166.jpg">
-                        </Col>
-                        <Col span="5">
-                            <Row class="friend-name">LSD</Row>
-                            <Row class="recent-chat">Yo.</Row>
-                        </Col>
-                    </Row>
-                    <Row :gutter="20" class="friend">
-                        <Col span="5">
-                            <img src="http://pcim2j6mo.bkt.clouddn.com//18-9-3/51434425.jpg">
-                        </Col>
-                        <Col span="18">
-                            <Row class="friend-name">齐木楠雄</Row>
-                            <Row class="recent-chat">なさい。いのか分からない。.</Row>
                         </Col>
                     </Row>
                 </Col>
                 <Col span="16">
                     <Row class="current-chat-title">
-                        <h2>WHH</h2>
+                        <h2>{{current.nickname}}</h2>
                     </Row>
                     <Row class="chat-records">
-                        <Row>
+                        <Row v-for="it in chat_record" class="chat-content">{{it}}</Row>
+                        <!-- <Row>
                             <Col class="left chat-content" span="7">Yo.</Col>
                         </Row>
                         <Row class="right chat-content">Yooooooop.</Row>
                         <Row>
                             <Col class="left chat-content" span="7">YoYoYo.</Col>
-                        </Row>
+                        </Row> -->
                     </Row>
                     <Row class="chat-input">
-                        <form>
-                            <Input :rows="3" type="textarea"/>
-                            <button type="submit" hidden></button>
+                        <form @submit="send_msg">
+                            <Row :gutter="5">
+                                <Col span="22">
+                                    <Input v-model="input_msg" autofocus :rows="3" type="textarea"/>
+                                </Col>
+                                <Col span="2">
+                                    <Button type="default" html-type="submit">Send</Button>
+                                </Col>
+                            </Row>
                         </form>
                     </Row>
                 </Col>
@@ -71,7 +60,63 @@
     </div>
 </template>
 <script>
+import api from '../lib/api';
+import session from '../lib/session';
 export default {
+    mounted() {
+        this.read_msg();
+        this.read_contact();
+    },
+    data() {
+        return {
+            form: {},
+            current: {
+                nickname: 'onion',
+            },
+            chat_record:[],
+            input_msg: '',
+            message_list: [],
+            contact_id_list: [],
+            contact_list: [],
+            on_click_id: '',
+        }
+    },
+    methods: {
+        read_msg() {
+            api('msg/read',{to: session.uinfo().id})
+                .then(r => {
+                    this.message_list = r.data;
+                    this.read_contact();
+                })
+        },
+        read_contact() {
+            let result = [];
+            this.message_list.forEach(row => {
+                result.push(row.from);
+            })
+            let arr = Array.from(new Set(result));
+            this.contact_id_list = arr;
+            api('user/find_many',{in: this.contact_id_list})
+                .then(r => {
+                    this.contact_list = r.data;
+                })
+        },
+        send_msg() {
+            this.form.user_id = session.uinfo().id;
+            api('msg/create', this.form)
+                .then(r => {
+                    this.read_msg();
+                })
+        },
+        show_current_chat(it) {
+            this.current = it;
+            this.on_click_id = it.id;
+            api('msg/read',{where:{from:[session.uinfo().id,it.id]}})
+                .then(r => {
+                    this.chat_record = r.data;
+                })
+        } 
+    }
 }
 </script>
 
@@ -93,6 +138,9 @@ export default {
         padding: 10px;
         border-bottom: 1px solid #efefef;
         padding-right: 0;
+    }
+    .chat-body .friend:hover {
+        background: #efefef;
     }
     .friend.active {
         background: #efefef;
@@ -127,7 +175,6 @@ export default {
     .chat-input {
         margin-top: 15px;
     }
-
     .chat-input textarea {
         outline: 0;
         border: 0;
@@ -135,6 +182,9 @@ export default {
     .chat-records {
         height: 250px;
         border-bottom: 1px solid #e3e1e1;
+    }
+    .chat-input button {
+        margin-top: 40px;
     }
 </style>
 

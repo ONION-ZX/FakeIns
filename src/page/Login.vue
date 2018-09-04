@@ -26,9 +26,9 @@
                             </Col>
                         </Row>
                     </FormItem>
-                    <Row>
+                    <!-- <Row>
                         <div style="margin-left: 12px">请登录测试账号: 用户名 LSD 密码 123456</div>
-                    </Row>
+                    </Row> -->
                 </Form>
             </Col>
         </Row>
