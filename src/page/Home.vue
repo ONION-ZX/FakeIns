@@ -182,6 +182,9 @@ export default {
         }        
     },
     methods: {
+        delete_user(id) {
+            api('user/delete',{id:id})
+        },
         delete() {
             api('post/delete',{id:39})
         },

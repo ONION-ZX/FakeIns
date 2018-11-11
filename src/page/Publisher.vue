@@ -136,7 +136,6 @@ export default {
     data() {
         return {
             publisher_id: '',
-            btn_text: '',
             focused: '',
             publisher_info: {},
             post_list: [],
@@ -238,7 +237,7 @@ export default {
         detect_follower() {
             if(!this.follower_list)
                 return;
-            this.show_follower_list=true;
+            this.show_follower_list = true;
         }
     }
 }
